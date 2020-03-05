@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@android:color/transparent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/compat_margin_lg"
+        android:typeface="serif"
+        android:gravity="center"
+        android:letterSpacing="0.1"
+        android:text="HELLO"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_md"
+        android:typeface="serif"
+        android:gravity="center"
+        android:letterSpacing="0.1"
+        android:text="Sign in your account"
+        android:textColor="@color/grey_dark"
+        android:textSize="14sp" />
+
+</LinearLayout>

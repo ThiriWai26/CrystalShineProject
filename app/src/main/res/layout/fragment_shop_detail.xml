@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+<!--    <com.google.android.material.appbar.AppBarLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:theme="@style/AppTheme.AppBarOverlay">-->
+
+<!--        <androidx.appcompat.widget.Toolbar-->
+<!--            android:id="@+id/toolbar"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:background="#FFFFFF"-->
+<!--            app:popupTheme="@style/AppTheme.PopupOverlay">-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/tvTitle"-->
+<!--                android:layout_width="340dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:gravity="center_horizontal"-->
+<!--                android:text=""-->
+<!--                android:textColor="#000000"-->
+<!--                android:textSize="16sp"-->
+<!--                android:textStyle="bold"-->
+<!--                android:typeface="normal" />-->
+
+<!--        </androidx.appcompat.widget.Toolbar>-->
+
+<!--    </com.google.android.material.appbar.AppBarLayout>-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/view_width"
+            android:background="@drawable/beautysalon"
+            android:scaleType="fitXY"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/margin_lg"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_md"
+                android:text="Crystal Shine"
+                android:textSize="@dimen/compat_text_size_md"
+                android:textStyle="bold"/>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tvTown"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="စမ်းချောင်း"
+                    android:layout_marginTop="@dimen/margin_lg"
+                    android:textSize="@dimen/compat_text_size_s" />
+
+                <RatingBar
+                    android:id="@+id/rating"
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="@dimen/margin_lg" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tvType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Beauty Salon"
+                android:layout_marginTop="@dimen/margin_lg"
+                android:textSize="@dimen/compat_text_size_xs"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="wrap_content"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="@dimen/margin_md"
+            android:layout_marginBottom="10dp"
+            android:background="#D6D6D6"
+            tools:ignore="NotSibling" />
+
+        <TextView
+            android:id="@+id/tvAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No.50/1, စမ်းချောင်း"
+            android:layout_margin="@dimen/margin_lg"
+            android:textStyle="bold"
+            android:textSize="@dimen/compat_text_size_s" />
+
+    </LinearLayout>
+
+    <Button
+        style="@style/MyBtnStyle"
+        android:layout_width="@dimen/view_width"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_login_btn_round"
+        android:layout_marginTop="120dp"
+        android:layout_marginBottom="@dimen/padding_xl"
+        android:fontFamily="sans-serif"
+        android:onClick="onSubmit"
+        android:text="@string/label_editshop"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        app:cornerRadius="24dp"
+        android:textSize="16dp" />
+
+
+    <FrameLayout
+        android:id="@+id/frame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

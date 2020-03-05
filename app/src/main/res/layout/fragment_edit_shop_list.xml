@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/margin_lg"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tvshopName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Shop Name"
+        android:textColor="@color/gray"
+        android:textSize="@dimen/title_size" />
+
+    <EditText
+        android:id="@+id/edtshopName"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="@dimen/margin_lg"
+        android:background="@drawable/bg_login_btn_rounded"
+        android:imeOptions="actionNext"
+        android:paddingLeft="15dp"
+        android:textColor="@color/grey_dark"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tvphoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Photo"
+        android:layout_marginTop="@dimen/margin_lg"
+        android:textColor="@color/gray"
+        android:textSize="@dimen/title_size" />
+
+    <EditText
+        android:id="@+id/edtphoto"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="@dimen/margin_lg"
+        android:drawableEnd="@drawable/camera_gray"
+        android:background="@drawable/bg_login_btn_rounded"
+        android:imeOptions="actionNext"
+        android:paddingLeft="24dp"
+        android:paddingStart="24dp"
+        android:paddingRight="24dp"
+        android:textColor="@color/grey_dark"
+        android:textSize="14sp"
+        tools:ignore="RtlCompat" />
+
+    <TextView
+        android:id="@+id/tvCategory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Category"
+        android:layout_marginTop="@dimen/margin_lg"
+        android:textColor="@color/gray"
+        android:textSize="@dimen/title_size" />
+
+    <Spinner
+        android:id="@+id/spinnerCategory"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:dropDownVerticalOffset="?attr/dropdownListPreferredItemHeight"
+        android:layout_marginTop="@dimen/margin_lg"
+        android:background="@drawable/bg_login_btn_rounded"
+        android:spinnerMode="dropdown" />
+
+    <TextView
+        android:id="@+id/tvtownship"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Township"
+        android:layout_marginTop="@dimen/margin_lg"
+        android:textColor="@color/gray"
+        android:textSize="@dimen/title_size" />
+
+    <Spinner
+        android:id="@+id/spinnerTownship"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:dropDownVerticalOffset="?attr/dropdownListPreferredItemHeight"
+        android:layout_marginTop="@dimen/margin_lg"
+        android:background="@drawable/bg_login_btn_rounded"
+        android:spinnerMode="dropdown" />
+
+    <TextView
+        android:id="@+id/tvAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Address"
+        android:layout_marginTop="@dimen/margin_lg"
+        android:textColor="@color/gray"
+        android:textSize="@dimen/title_size" />
+
+    <EditText
+        android:id="@+id/edtAddress"
+        android:layout_width="match_parent"
+        android:layout_height="84dp"
+        android:layout_marginTop="@dimen/margin_lg"
+        android:background="@drawable/bg_login_btn_rounded"
+        android:imeOptions="actionNext"
+        android:paddingLeft="15dp"
+        android:textColor="@color/grey_dark"
+        android:textSize="14sp" />
+
+
+    <FrameLayout
+        android:id="@+id/frame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</LinearLayout>
