@@ -44,6 +44,8 @@ public class ProjectNameListFragment extends Fragment  {
         View view = inflater.inflate(R.layout.fragment_project_name_list, container, false);
         initFragment(view);
         return view;
+
+
     }
 
     private void initFragment(View view) {

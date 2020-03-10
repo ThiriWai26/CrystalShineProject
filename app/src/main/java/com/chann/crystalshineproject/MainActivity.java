@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(toolbar);
         
 
-        init();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -64,27 +63,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_dehaze_black_24dp);
     }
 
-
-
-    private void init() {
-        Intent intent = getIntent();
-        fragmentName = intent.getStringExtra("fragment");
-
-        Log.e("fragmentName",fragmentName);
-
-        if(fragmentName.equals("Projects")){
-            loadFragment(new ProjectNameListFragment());
-            txttitle.setText("Projects");
-        }
-        if(fragmentName.equals("Township")){
-            loadFragment(new TownshipListFragment());
-            txttitle.setText("Township");
-        }
-        if(fragmentName.equals("ShopList")){
-            loadFragment(new ShopListFragment());
-            txttitle.setText("Shop List");
-        }
-    }
 
 
     @Override
