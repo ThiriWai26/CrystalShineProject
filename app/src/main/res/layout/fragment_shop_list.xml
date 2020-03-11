@@ -6,33 +6,65 @@
     android:background="#ffffff"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.core.widget.NestedScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scrollbars="none">
+        android:orientation="vertical" >
 
-        <LinearLayout
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:focusableInTouchMode="true"
-            android:orientation="vertical">
+            android:theme="@style/AppTheme.AppBarOverlay">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="0dp"
+                android:layout_height="wrap_content"
                 android:background="#FFFFFF"
-                android:clipChildren="true"
-                android:clipToPadding="true"
-                android:scrollbars="vertical"
-                tools:ignore="NotSibling"
-                tools:listitem="@layout/layout_shoplist_item" />
+                app:popupTheme="@style/AppTheme.PopupOverlay">
 
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+                <TextView
+                    android:id="@+id/tvTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:text="Shop List"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:typeface="normal" />
+            </androidx.appcompat.widget.Toolbar>
 
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusableInTouchMode="true"
+                android:orientation="vertical">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="0dp"
+                    android:background="#FFFFFF"
+                    android:clipChildren="true"
+                    android:clipToPadding="true"
+                    android:scrollbars="vertical"
+                    tools:ignore="NotSibling"
+                    tools:listitem="@layout/layout_shoplist_item" />
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+    </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"

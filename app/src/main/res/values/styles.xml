@@ -53,4 +53,10 @@
     <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <item name="searchIcon">@drawable/ic_search_black_24dp</item>
+        <!--<item name="queryBackground">#ffffff</item>-->
+        <item name="searchHintIcon">@null</item>
+    </style>
+
 </resources>

@@ -79,12 +79,12 @@ public class ProjectNameListFragment extends Fragment  {
 
 //    @Override
 //    public void onProjectNameListClick(int id) {
-//        FragmentRecentBookDetail fragmentRecentBookDetail=new FragmentRecentBookDetail();
+//        TownshipListFragment townshipListFragment=new TownshipListFragment();
 //        Bundle bundle=new Bundle();
-//        bundle.putInt("book_id",id);
-//        fragmentRecentBookDetail.setArguments(bundle);
+////        bundle.putInt("book_id",id);
+//        townshipListFragment.setArguments(bundle);
 //        FragmentTransaction fragmentTransaction=getFragmentManager().beginTransaction();
-//        fragmentTransaction.replace(R.id.frame,fragmentRecentBookDetail).commit();
+//        fragmentTransaction.replace(R.id.frame,townshipListFragment).commit();
 //
 //        Log.e("book_list_id",String.valueOf(id));
 //    }

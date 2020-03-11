@@ -10,7 +10,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.LoginActivity"></activity>
+        <activity android:name=".activity.ShopDetailActivity"></activity>
+        <activity android:name=".activity.CheckInActivity" />
+        <activity android:name=".activity.EditShopListActivity" />
+        <activity android:name=".activity.ShopListActivity" />
+        <activity android:name=".activity.LoginActivity" />
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">

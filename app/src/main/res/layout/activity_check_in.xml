@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="#ffffff"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <androidx.appcompat.widget.Toolbar
@@ -18,24 +19,32 @@
             android:background="#FFFFFF"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
-            <TextView
-                android:id="@+id/tvTitle"
-                android:layout_width="340dp"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:text=""
-                android:textColor="#000000"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:typeface="normal" />
+            <RelativeLayout
+                android:id="@+id/relative"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_height="?android:attr/actionBarSize">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/dots_vertical" />
+                <TextView
+                    android:id="@+id/tvTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text=" "
+                    android:textAppearance="@android:style/TextAppearance.Medium"
+                    android:textColor="#000000"
+                    android:textStyle="bold"
+                    android:typeface="normal" />
 
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_margin="@dimen/margin_lg"
+                    android:background="@drawable/dots_vertical" />
+
+            </RelativeLayout>
         </androidx.appcompat.widget.Toolbar>
-
     </com.google.android.material.appbar.AppBarLayout>
 
     <include
@@ -58,6 +67,7 @@
         android:textColor="@android:color/white"
         app:cornerRadius="24dp"
         android:textSize="16dp" />
+
 
 
 </LinearLayout>

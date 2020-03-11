@@ -1,4 +1,4 @@
-package com.chann.crystalshineproject;
+package com.chann.crystalshineproject.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -6,45 +6,34 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
-import android.widget.TextView;
+import android.view.View;
 import android.widget.Toast;
 
-import com.chann.crystalshineproject.activity.LoginActivity;
-import com.chann.crystalshineproject.fragment.ProjectNameListFragment;
-import com.chann.crystalshineproject.fragment.ShopListFragment;
-import com.chann.crystalshineproject.fragment.TownshipListFragment;
+import com.chann.crystalshineproject.R;
 import com.google.android.material.navigation.NavigationView;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class CheckInActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-
-    private String fragmentName;
-    private TextView txttitle;
     private DrawerLayout mDrawerLayout;
-    private ActionBarDrawerToggle mDrawerToggle;
-
-    public static Intent getInstance(Context applicationContext) {
-        return new Intent(applicationContext, MainActivity.class);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_check_in);
 
-        txttitle = findViewById(R.id.tvTitle);
+        initActivity();
+    }
+
+    private void initActivity() {
+
         Toolbar toolbar =  findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        
-        init();
+
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -59,47 +48,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_dehaze_black_24dp);
     }
 
-    private void init() {
-        Intent intent = getIntent();
-        fragmentName = intent.getStringExtra("fragment");
-
-        Log.e("fragmentName",fragmentName);
-
-        if(fragmentName.equals("Projects")){
-            loadFragment(new ProjectNameListFragment());
-            txttitle.setText("Projects");
-        }
-        if(fragmentName.equals("Township")){
-            loadFragment(new TownshipListFragment());
-            txttitle.setText("Township");
-        }
-
-    }
-
-
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         int id = menuItem.getItemId();
 
         if (id == R.id.nav_camera) {
-            Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Camera", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_gallery) {
-            Toast.makeText(this, "Medicine", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Gallery", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_slideshow) {
-            Toast.makeText(this, "Favourite", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Slideshow", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_manage) {
-            Toast.makeText(this, "Profile", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Tools", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_share) {
             Toast.makeText(this, "Setting", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_logout) {
@@ -118,9 +78,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-    
-    private void loadFragment(Fragment fragment){
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame,fragment).commit();
 
+    public void onSubmit(View view) {
     }
 }
