@@ -29,19 +29,22 @@
                     android:id="@+id/tvTitle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text=" "
+                    android:layout_marginLeft="60dp"
+                    android:layout_marginTop="16dp"
+                    android:text="Crystal Shine"
                     android:textAppearance="@android:style/TextAppearance.Medium"
                     android:textColor="#000000"
                     android:textStyle="bold"
-                    android:typeface="normal" />
+                    android:typeface="normal"
+                    android:textSize="16sp"/>
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_margin="@dimen/margin_lg"
-                    android:background="@drawable/dots_vertical" />
+                    android:background="@drawable/dots_vertical"
+                    android:onClick="onDetail"/>
 
             </RelativeLayout>
         </androidx.appcompat.widget.Toolbar>
@@ -54,6 +57,7 @@
         android:layout_weight="1" />
 
     <Button
+        android:id="@+id/btnsubmit"
         style="@style/MyBtnStyle"
         android:layout_width="@dimen/view_width"
         android:layout_height="wrap_content"

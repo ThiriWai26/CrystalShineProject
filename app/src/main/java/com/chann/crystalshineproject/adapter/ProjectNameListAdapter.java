@@ -6,8 +6,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.chann.crystalshineproject.api.OnProjectNameItemClickListener;
 import com.chann.crystalshineproject.data.ProjectNameList;
+import com.chann.crystalshineproject.data.Projects;
 import com.chann.crystalshineproject.holder.ProjectNameListHolder;
 
 import java.util.ArrayList;
@@ -15,13 +15,13 @@ import java.util.List;
 
 public class ProjectNameListAdapter extends RecyclerView.Adapter<ProjectNameListHolder> {
 
-    private List<ProjectNameList> projectNameLists;
-    private OnProjectNameItemClickListener listener;
+    private List<Projects> projects;
+    private ProjectNameListHolder.OnProjectNameItemClickListener listener;
 
-    public ProjectNameListAdapter(OnProjectNameItemClickListener listener){
+    public ProjectNameListAdapter(ProjectNameListHolder.OnProjectNameItemClickListener listener){
 
         this.listener = listener;
-        projectNameLists = new ArrayList<>();
+        projects = new ArrayList<>();
     }
 
     @NonNull
@@ -33,12 +33,21 @@ public class ProjectNameListAdapter extends RecyclerView.Adapter<ProjectNameList
 
     @Override
     public void onBindViewHolder(@NonNull ProjectNameListHolder holder, int position) {
-        holder.bindData(projectNameLists.get(position));
+        holder.bindData(projects.get(position));
 
     }
 
     @Override
     public int getItemCount() {
-        return projectNameLists.size();
+        return projects.size();
+    }
+
+    public void addItem(List<Projects> project) {
+        if (projects.isEmpty()) {
+            this.projects = project;
+        } else
+            this.projects.addAll(project);
+        notifyDataSetChanged();
+
     }
 }

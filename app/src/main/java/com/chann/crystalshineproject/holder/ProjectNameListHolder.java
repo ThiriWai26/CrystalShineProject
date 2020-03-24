@@ -1,5 +1,6 @@
 package com.chann.crystalshineproject.holder;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chann.crystalshineproject.R;
 import com.chann.crystalshineproject.api.OnProjectNameItemClickListener;
 import com.chann.crystalshineproject.data.ProjectNameList;
+import com.chann.crystalshineproject.data.Projects;
 
 public class ProjectNameListHolder extends RecyclerView.ViewHolder {
 
@@ -22,7 +24,7 @@ public class ProjectNameListHolder extends RecyclerView.ViewHolder {
 
     public ProjectNameListHolder(@NonNull View itemView, OnProjectNameItemClickListener listener) {
         super(itemView);
-        this.listener = this.listener;
+        this.listener = listener;
         init(itemView);
     }
 
@@ -39,7 +41,23 @@ public class ProjectNameListHolder extends RecyclerView.ViewHolder {
         return new ProjectNameListHolder( view , listener);
     }
 
-    public void bindData(ProjectNameList projectNameList) {
+    public void bindData(Projects projects) {
+        tvName.setText(projects.id);
+        tvType.setText(projects.name);
 
+        Log.e("Name", String.valueOf(tvName));
+        Log.e("Type", String.valueOf(tvType));
+
+        layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onProjectListClick(projects.id);
+            }
+        });
+
+    }
+
+    public interface OnProjectNameItemClickListener {
+        void onProjectListClick(int id);
     }
 }

@@ -3,17 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-        <variable
-            name="userlogin"
-            type="com.chann.crystalshineproject.data.UserLogin" />
-    </data>
 
     <FrameLayout android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        tools:context="com.example.crystalshine.activity.LoginActivity" >
+        android:layout_height="match_parent">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -66,13 +58,13 @@
 
 
                     <Button
+                        android:id="@+id/btnlogin"
                         style="@style/MyBtnStyle"
                         android:layout_width="@dimen/view_width"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_xl"
+                        android:layout_marginTop="64dp"
                         android:background="@drawable/bg_login_btn_round"
                         android:fontFamily="sans-serif"
-                        android:onClick="onLogin"
                         android:text="@string/label_login"
                         android:textAllCaps="false"
                         android:textColor="@android:color/white"

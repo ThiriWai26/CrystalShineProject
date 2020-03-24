@@ -13,24 +13,21 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.chann.crystalshineproject.R;
-import com.chann.crystalshineproject.adapter.ShopListAdapter;
-import com.chann.crystalshineproject.data.ShopList;
+import com.chann.crystalshineproject.adapter.TownshipListAdapter;
 import com.chann.crystalshineproject.data.ShopListResponse;
 import com.chann.crystalshineproject.data.Token;
-import com.chann.crystalshineproject.holder.ShopListHolder;
+import com.chann.crystalshineproject.data.Township;
+import com.chann.crystalshineproject.data.TownshipResponse;
+import com.chann.crystalshineproject.holder.TownshipListHolder;
 import com.chann.crystalshineproject.service.RetrofitService;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -39,33 +36,34 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ShopListActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ShopListHolder.OnShopListItemClickListener {
+public class TownshipListActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, TownshipListHolder.OnTownshipItemClickListener {
 
-    private DrawerLayout mDrawerLayout;
-    private ShopListAdapter adapter;
-    private LinearLayoutManager layoutManager;
     private RecyclerView recyclerView;
-    private SearchView searchView;
+    private TownshipListAdapter adapter;
+    private DrawerLayout mDrawerLayout;
     private String token = null;
-    private int townshipId = -1;
-    List<ShopList> shopListList = new ArrayList<>();
+    private int projectId = -1;
+    List<Township> townshipList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.fragment_township_list);
 
-        setContentView(R.layout.activity_shop_list);
+        init();
+    }
+
+    private void init() {
+
         recyclerView = findViewById(R.id.recyclerView);
-
-        adapter = new ShopListAdapter(this);
-        layoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(layoutManager);
+        adapter = new TownshipListAdapter(this);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.setAdapter(adapter);
         token = Token.MyToken.getToken();
 
         Bundle bundle = getIntent().getExtras();
-        townshipId = bundle.getInt("townshipId");
-        Log.e("buildingId",String.valueOf(townshipId));
+        projectId = bundle.getInt("projectId");
+        Log.e("buildingId",String.valueOf(projectId));
 
         initActivity();
         initApi();
@@ -73,35 +71,33 @@ public class ShopListActivity extends AppCompatActivity implements NavigationVie
     }
 
     private void initApi() {
-         RetrofitService.getApiEnd().shopList(token,townshipId).enqueue(new Callback<ShopListResponse>() {
-             @Override
-             public void onResponse(Call<ShopListResponse> call, Response<ShopListResponse> response) {
-                 if(response.isSuccessful()){
-                     if(response.body().isSuccess){
-                         Log.e("response.body","success");
-                         adapter.addItem(response.body().shopList);
-                         Log.e("size", String.valueOf(shopListList.size()));
-                         adapter.notifyDataSetChanged();
-                     }
-                     else{
-                         Log.e("response.body", "fail");
-                     }
-                 }
-             }
+        RetrofitService.getApiEnd().townshopList(token,projectId).enqueue(new Callback<TownshipResponse>() {
+            @Override
+            public void onResponse(Call<TownshipResponse> call, Response<TownshipResponse> response) {
+                if(response.isSuccessful()){
+                    if(response.body().isSuccess){
+                        Log.e("response.body","success");
+                        adapter.addItem(response.body().township);
+                        Log.e("size", String.valueOf(townshipList.size()));
+                        adapter.notifyDataSetChanged();
+                    }
+                    else{
+                        Log.e("response.body","fail");
+                    }
+                }
+            }
 
-             @Override
-             public void onFailure(Call<ShopListResponse> call, Throwable t) {
-                 Log.e("failure", t.toString());
-             }
-         });
-
+            @Override
+            public void onFailure(Call<TownshipResponse> call, Throwable t) {
+                Log.e("failure", t.toString());
+            }
+        });
     }
-
 
     private void initActivity() {
 
         Toolbar toolbar =  findViewById(R.id.toolbar);
-       setSupportActionBar(toolbar);
+        setSupportActionBar(toolbar);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 //        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
 //                this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -147,15 +143,11 @@ public class ShopListActivity extends AppCompatActivity implements NavigationVie
         return true;
     }
 
-    public void onEdit(View view) {
-        Intent intent = new Intent(getApplicationContext(), EditShopListActivity.class);
-        startActivity(intent);
-    }
-
-
     @Override
-    public void onShopClick(int id) {
-        Intent intent = new Intent(getApplicationContext(), CheckInActivity.class);
+    public void onTownshipClick(int id) {
+        Intent intent = new Intent(getApplicationContext(), ShopListActivity.class);
+        intent.putExtra("townshipId", id);
+        Log.e("townshipId",String.valueOf(id));
         startActivity(intent);
     }
 }

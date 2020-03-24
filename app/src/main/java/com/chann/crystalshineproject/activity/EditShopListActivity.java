@@ -17,6 +17,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -24,6 +25,10 @@ import android.widget.Toast;
 import com.chann.crystalshineproject.R;
 import com.chann.crystalshineproject.data.EditShopList;
 import com.google.android.material.navigation.NavigationView;
+
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.disposables.CompositeDisposable;
 
@@ -34,7 +39,11 @@ public class EditShopListActivity extends AppCompatActivity implements Navigatio
     private static EditShopList editShopList;
     private EditText edtshopName, edtphoto, edtaddress;
     private Spinner spinnerCategory, spinnerTownship;
+    private String editName = "";
     private String imagePath = "";
+    ArrayAdapter<String> adapter;
+    List<String> categories = new ArrayList<>();
+    List<String> townships = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +57,7 @@ public class EditShopListActivity extends AppCompatActivity implements Navigatio
 
         editShopList = edtShopList;
         Intent intent = new Intent(context, EditShopListActivity.class);
+
         return intent;
     }
 
@@ -59,13 +69,13 @@ public class EditShopListActivity extends AppCompatActivity implements Navigatio
         init();
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        mDrawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.navView);
-        navigationView.setNavigationItemSelectedListener(this);
+//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+//                this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+//        mDrawerLayout.addDrawerListener(toggle);
+//        toggle.syncState();
+//
+//        NavigationView navigationView = (NavigationView) findViewById(R.id.navView);
+//        navigationView.setNavigationItemSelectedListener(this);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -80,6 +90,21 @@ public class EditShopListActivity extends AppCompatActivity implements Navigatio
         edtaddress = findViewById(R.id.edtAddress);
         spinnerCategory = findViewById(R.id.spinnerCategory);
         spinnerTownship = findViewById(R.id.spinnerTownship);
+
+//        categories.add("Toner");
+//        categories.add("Suncream");
+//        categories.add("Daycream");
+//
+//        townships.add("Yangon");
+//        townships.add("Mandalay");
+//
+//        adapter = new ArrayAdapter<String>(getBaseContext(), R.layout.spinner_item,categories);
+//        adapter = new ArrayAdapter<String>(getBaseContext(), R.layout.spinner_item,townships);
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//
+//        spinnerCategory.setAdapter(adapter);
+//        spinnerTownship.setAdapter(adapter);
+
     }
 
     @Override

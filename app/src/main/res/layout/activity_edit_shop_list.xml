@@ -22,19 +22,20 @@
             <RelativeLayout
                 android:id="@+id/relative"
                 android:layout_width="match_parent"
-                android:gravity="center"
                 android:layout_height="?android:attr/actionBarSize">
 
                 <TextView
                     android:id="@+id/tvTitle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginTop="16dp"
                     android:text="Shop List"
                     android:textAppearance="@android:style/TextAppearance.Medium"
                     android:textColor="#000000"
                     android:textStyle="bold"
-                    android:typeface="normal" />
+                    android:typeface="normal"
+                    tools:ignore="RtlCompat" />
 
                 <TextView
                     android:id="@+id/tvSave"
@@ -43,7 +44,7 @@
                     android:text="Save"
                     android:textColor="@color/colorAccent"
                     android:layout_alignParentRight="true"
-                    android:layout_margin="@dimen/margin_lg"
+                    android:layout_margin="18dp"
                     android:onClick="onSave"/>
 
             </RelativeLayout>
@@ -130,10 +131,11 @@
                 android:id="@+id/spinnerCategory"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:dropDownVerticalOffset="?attr/dropdownListPreferredItemHeight"
                 android:layout_marginTop="@dimen/margin_lg"
                 android:background="@drawable/bg_login_btn_rounded"
+                android:dropDownWidth="wrap_content"
                 android:spinnerMode="dropdown" />
+
 
             <TextView
                 android:id="@+id/tvtownship"
@@ -148,7 +150,6 @@
                 android:id="@+id/spinnerTownship"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:dropDownVerticalOffset="?attr/dropdownListPreferredItemHeight"
                 android:layout_marginTop="@dimen/margin_lg"
                 android:background="@drawable/bg_login_btn_rounded"
                 android:spinnerMode="dropdown" />
@@ -175,13 +176,13 @@
 
     </LinearLayout>
 
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/navView"
-        android:layout_width="250dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        android:background="#E7DDDD"
-        app:headerLayout="@layout/nav_header_home_navi"
-        app:menu="@menu/bottom_nav_menu" />
+<!--    <com.google.android.material.navigation.NavigationView-->
+<!--        android:id="@+id/navView"-->
+<!--        android:layout_width="250dp"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_gravity="start"-->
+<!--        android:fitsSystemWindows="true"-->
+<!--        android:background="#E7DDDD"-->
+<!--        app:headerLayout="@layout/nav_header_home_navi"-->
+<!--        app:menu="@menu/bottom_nav_menu" />-->
 </RelativeLayout>

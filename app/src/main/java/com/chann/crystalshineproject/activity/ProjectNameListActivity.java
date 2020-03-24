@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
+import androidx.databinding.DataBindingUtil;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,24 +15,23 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.SearchView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.chann.crystalshineproject.R;
-import com.chann.crystalshineproject.adapter.ShopListAdapter;
-import com.chann.crystalshineproject.data.ShopList;
-import com.chann.crystalshineproject.data.ShopListResponse;
+import com.chann.crystalshineproject.adapter.ProjectNameListAdapter;
+import com.chann.crystalshineproject.data.ProjectNameList;
+import com.chann.crystalshineproject.data.ProjectNameListResponse;
+import com.chann.crystalshineproject.data.Projects;
 import com.chann.crystalshineproject.data.Token;
-import com.chann.crystalshineproject.holder.ShopListHolder;
+import com.chann.crystalshineproject.holder.ProjectNameListHolder;
 import com.chann.crystalshineproject.service.RetrofitService;
+import com.chann.crystalshineproject.viewmodel.ProjectNameListViewModel;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -39,70 +40,65 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ShopListActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ShopListHolder.OnShopListItemClickListener {
+public class ProjectNameListActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ProjectNameListHolder.OnProjectNameItemClickListener {
 
-    private DrawerLayout mDrawerLayout;
-    private ShopListAdapter adapter;
-    private LinearLayoutManager layoutManager;
     private RecyclerView recyclerView;
-    private SearchView searchView;
+    private ProjectNameListAdapter adapter;
+    private DrawerLayout mDrawerLayout;
     private String token = null;
-    private int townshipId = -1;
-    List<ShopList> shopListList = new ArrayList<>();
+    List<Projects> projects = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.fragment_project_name_list);
 
-        setContentView(R.layout.activity_shop_list);
-        recyclerView = findViewById(R.id.recyclerView);
+        init();
+    }
 
-        adapter = new ShopListAdapter(this);
-        layoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(layoutManager);
+    private void init() {
+
+        recyclerView = findViewById(R.id.projectNameList_recyclerView);
+        adapter = new ProjectNameListAdapter(this);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.setAdapter(adapter);
         token = Token.MyToken.getToken();
-
-        Bundle bundle = getIntent().getExtras();
-        townshipId = bundle.getInt("townshipId");
-        Log.e("buildingId",String.valueOf(townshipId));
+        Log.e("token", token);
 
         initActivity();
         initApi();
-
     }
 
     private void initApi() {
-         RetrofitService.getApiEnd().shopList(token,townshipId).enqueue(new Callback<ShopListResponse>() {
-             @Override
-             public void onResponse(Call<ShopListResponse> call, Response<ShopListResponse> response) {
-                 if(response.isSuccessful()){
-                     if(response.body().isSuccess){
-                         Log.e("response.body","success");
-                         adapter.addItem(response.body().shopList);
-                         Log.e("size", String.valueOf(shopListList.size()));
-                         adapter.notifyDataSetChanged();
-                     }
-                     else{
-                         Log.e("response.body", "fail");
-                     }
-                 }
-             }
 
-             @Override
-             public void onFailure(Call<ShopListResponse> call, Throwable t) {
-                 Log.e("failure", t.toString());
-             }
-         });
+        RetrofitService.getApiEnd().projectNameList(token).enqueue(new Callback<ProjectNameListResponse>() {
+            @Override
+            public void onResponse(Call<ProjectNameListResponse> call, Response<ProjectNameListResponse> response) {
+                if(response.isSuccessful()){
+                    if(response.body().isSuccess){
+                        Log.e("response.body","success");
+                        adapter.addItem(response.body().projectNameList.data);
+                        Log.e("size", String.valueOf(projects.size()));
+                        adapter.notifyDataSetChanged();
+                    }
+                    else {
+                        Log.e("response.body","fail");
+                    }
+                }
+            }
 
+            @Override
+            public void onFailure(Call<ProjectNameListResponse> call, Throwable t) {
+                Log.e("failure", t.toString());
+            }
+        });
     }
-
 
     private void initActivity() {
 
-        Toolbar toolbar =  findViewById(R.id.toolbar);
-       setSupportActionBar(toolbar);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+            Toolbar toolbar =  findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
+            mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 //        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
 //                this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
 //        mDrawerLayout.addDrawerListener(toggle);
@@ -111,10 +107,12 @@ public class ShopListActivity extends AppCompatActivity implements NavigationVie
 //        NavigationView navigationView = (NavigationView) findViewById(R.id.navView);
 //        navigationView.setNavigationItemSelectedListener(this);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_dehaze_black_24dp);
-    }
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_dehaze_black_24dp);
+
+        }
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -145,17 +143,15 @@ public class ShopListActivity extends AppCompatActivity implements NavigationVie
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
 
-    public void onEdit(View view) {
-        Intent intent = new Intent(getApplicationContext(), EditShopListActivity.class);
-        startActivity(intent);
     }
-
 
     @Override
-    public void onShopClick(int id) {
-        Intent intent = new Intent(getApplicationContext(), CheckInActivity.class);
+    public void onProjectListClick(int id) {
+        Intent intent = new Intent(getApplicationContext(), ShopListActivity.class);
+        intent.putExtra("projectId", id);
+        Log.e("projectId",String.valueOf(id));
         startActivity(intent);
     }
+
 }

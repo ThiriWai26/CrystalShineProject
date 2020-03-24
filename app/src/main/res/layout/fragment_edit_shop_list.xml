@@ -40,7 +40,8 @@
         android:imeOptions="actionNext"
         android:paddingLeft="15dp"
         android:textColor="@color/grey_dark"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        tools:ignore="RtlCompat" />
 
     <TextView
         android:id="@+id/tvphoto"
@@ -82,7 +83,8 @@
         android:dropDownVerticalOffset="?attr/dropdownListPreferredItemHeight"
         android:layout_marginTop="@dimen/margin_lg"
         android:background="@drawable/bg_login_btn_rounded"
-        android:spinnerMode="dropdown" />
+        android:spinnerMode="dropdown"
+        tools:ignore="RtlCompat" />
 
     <TextView
         android:id="@+id/tvtownship"

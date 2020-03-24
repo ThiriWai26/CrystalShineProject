@@ -2,16 +2,14 @@ package com.chann.crystalshineproject.data;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Login {
+public class Township {
 
-    @SerializedName("is_success")
-    public boolean isSuccess;
+    @SerializedName("id")
+    public int id;
+
+    @SerializedName("name")
+    public String name;
 
     @SerializedName("error_message")
     public String errorMessage;
-
-    @SerializedName("token")
-    public String token;
-
-
 }

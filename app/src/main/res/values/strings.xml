@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">CrystalShine</string>
 
-    <string name="hint_ph_no">Phone Number</string>
+    <string name="hint_ph_no">Enter Name or Phone Number</string>
     <string name="hint_pwd">Password</string>
     <string name="label_login">Login</string>
     <string name="label_submit">Submit</string>

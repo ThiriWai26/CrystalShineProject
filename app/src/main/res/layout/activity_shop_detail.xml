@@ -6,16 +6,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/navView"
-        android:layout_width="250dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        android:background="#E7DDDD"
-        app:headerLayout="@layout/nav_header_home_navi"
-        app:menu="@menu/bottom_nav_menu"
-        tools:ignore="MissingConstraints" />
+<!--    <com.google.android.material.navigation.NavigationView-->
+<!--        android:id="@+id/navView"-->
+<!--        android:layout_width="250dp"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_gravity="start"-->
+<!--        android:fitsSystemWindows="true"-->
+<!--        android:background="#E7DDDD"-->
+<!--        app:headerLayout="@layout/nav_header_home_navi"-->
+<!--        app:menu="@menu/bottom_nav_menu"-->
+<!--        tools:ignore="MissingConstraints" />-->
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
@@ -41,12 +41,14 @@
                     android:id="@+id/tvTitle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text=" "
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginTop="16dp"
+                    android:text="Crystal Shine"
                     android:textAppearance="@android:style/TextAppearance.Medium"
                     android:textColor="#000000"
                     android:textStyle="bold"
-                    android:typeface="normal" />
+                    android:typeface="normal"
+                    android:textSize="16sp"/>
 
             </RelativeLayout>
         </androidx.appcompat.widget.Toolbar>

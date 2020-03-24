@@ -8,9 +8,11 @@
     android:orientation="vertical">
 
     <ImageView
+        android:id="@+id/imgcamera"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:background="@drawable/camera"
+        android:onClick="onClickCamera"
         android:scaleType="fitXY" />
 
     <TextView

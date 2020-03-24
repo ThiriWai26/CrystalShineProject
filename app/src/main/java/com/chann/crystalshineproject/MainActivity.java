@@ -18,9 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chann.crystalshineproject.activity.LoginActivity;
-import com.chann.crystalshineproject.fragment.ProjectNameListFragment;
 import com.chann.crystalshineproject.fragment.ShopListFragment;
-import com.chann.crystalshineproject.fragment.TownshipListFragment;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -63,16 +61,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Intent intent = getIntent();
         fragmentName = intent.getStringExtra("fragment");
 
-        Log.e("fragmentName",fragmentName);
+//        Log.e("fragmentName",fragmentName);
 
-        if(fragmentName.equals("Projects")){
-            loadFragment(new ProjectNameListFragment());
-            txttitle.setText("Projects");
-        }
-        if(fragmentName.equals("Township")){
-            loadFragment(new TownshipListFragment());
-            txttitle.setText("Township");
-        }
+//        if(fragmentName.equals("Projects")){
+//            loadFragment(new ProjectNameListFragment());
+//            txttitle.setText("Projects");
+//        }
+//        if(fragmentName.equals("Township")){
+//            loadFragment(new TownshipListFragment());
+//            txttitle.setText("Township");
+//        }
 
     }
 

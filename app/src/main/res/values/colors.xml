@@ -27,6 +27,8 @@
     <color name="pink">#FA693B</color>
     <color name="yello">#F774A0</color>
 
+    <color name="background_tint">#EBE7E7</color>
+
     <color name="light_transparent">#16000000</color>
     <color name="color_bg_rounded">#e74c3c</color>
 
