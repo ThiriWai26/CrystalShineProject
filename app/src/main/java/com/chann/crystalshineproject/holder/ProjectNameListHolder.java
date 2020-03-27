@@ -31,7 +31,7 @@ public class ProjectNameListHolder extends RecyclerView.ViewHolder {
     private void init(View itemView) {
 
         tvName = itemView.findViewById(R.id.tvName);
-        tvType = itemView.findViewById(R.id.tvType);
+//        tvType = itemView.findViewById(R.id.tvType);
         layout = itemView.findViewById(R.id.projectNameList);
 
     }
@@ -42,11 +42,8 @@ public class ProjectNameListHolder extends RecyclerView.ViewHolder {
     }
 
     public void bindData(Projects projects) {
-        tvName.setText(projects.id);
-        tvType.setText(projects.name);
-
+        tvName.setText(projects.name);
         Log.e("Name", String.valueOf(tvName));
-        Log.e("Type", String.valueOf(tvType));
 
         layout.setOnClickListener(new View.OnClickListener() {
             @Override

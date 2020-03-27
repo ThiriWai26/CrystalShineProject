@@ -36,4 +36,7 @@
     <color name="colorGradientStart">#F519C5</color>
     <color name="colorGradientCenter">#F67831</color>
     <color name="colorGradientEnd">#940351</color>
+
+    <color name="bg_color_card">#EEF9FD</color>
+
 </resources>

@@ -81,13 +81,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 //        for ( int i = 0; i < phno.length(); i++ )
 //        {
-//            ph = phno.charAt(i);
+//            ph += phno.charAt(i);
 //        }
-//        ph = phno.charAt(0);
-//        for ( int i = 0; i < pwds.length(); i++)
+//        for ( int i = 0; i < passw.length(); i++)
 //        {
-//            pwd = pwds.charAt(i);
+//            pwd += passw.charAt(i);
 //        }
+//
         Log.e("phone_num", String.valueOf(ph));
         Log.e("password", String.valueOf(pwd));
 
@@ -101,8 +101,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void onResponse(Call<Login> call, Response<Login> response) {
                 if(response.isSuccessful()){
                     if(response.body().isSuccess){
-                        Log.e("login","success");
-                        Log.e("user token ", token);
+                        Log.e("Token", response.body().token);
+
+                        token = response.body().token;
+                        Token.MyToken.setToken(token);
+
                         editor.putString("token", token);
                         editor.apply();
                         editor.commit();

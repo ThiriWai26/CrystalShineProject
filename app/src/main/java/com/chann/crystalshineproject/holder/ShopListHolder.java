@@ -13,6 +13,8 @@ import com.chann.crystalshineproject.R;
 import com.chann.crystalshineproject.api.OnProjectNameItemClickListener;
 import com.chann.crystalshineproject.data.ShopList;
 
+import java.util.List;
+
 public class ShopListHolder extends RecyclerView.ViewHolder {
 
     private OnShopListItemClickListener listener;

@@ -1,40 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#ffffff"
-    android:orientation="vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:ignore="Orientation">
-
-    <com.google.android.material.appbar.AppBarLayout
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <FrameLayout
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:layout_height="match_parent"
+        android:background="#ffffff">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#FFFFFF"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
+            android:orientation="vertical" >
 
-            <TextView
-                android:id="@+id/tvTitle"
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appBarLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="100dp"
-                android:layout_marginTop="16dp"
-                android:text="Township"
-                android:textColor="#000000"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:typeface="normal" />
-        </androidx.appcompat.widget.Toolbar>
+                android:layout_height="?android:attr/actionBarSize"
+                android:background="#ffffff"
+                android:theme="@style/AppTheme.AppBarOverlay">
 
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#FFFFFF"
+                    app:popupTheme="@style/AppTheme.PopupOverlay">
 
-    </com.google.android.material.appbar.AppBarLayout>
+                    <RelativeLayout
+                        android:id="@+id/relative"
+                        android:layout_width="match_parent"
+                        android:gravity="center"
+                        android:layout_height="?android:attr/actionBarSize">
+
+                        <TextView
+                            android:id="@+id/tvTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="80dp"
+                            android:layout_marginTop="16dp"
+                            android:text="Township"
+                            android:textAppearance="@android:style/TextAppearance.Medium"
+                            android:textColor="#000000"
+                            android:textStyle="bold"
+                            android:typeface="normal"
+                            android:textSize="16sp"/>
+
+                        <ImageView
+                            android:id="@+id/imgsetting"
+                            android:layout_width="24dp"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="40dp"
+                            android:src="@drawable/setting"
+                            android:onClick="onFilterClick"/>
+
+                    </RelativeLayout>
+                </androidx.appcompat.widget.Toolbar>
+            </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -64,3 +86,5 @@
     </androidx.core.widget.NestedScrollView>
 
 </LinearLayout>
+    </FrameLayout>
+</layout>

@@ -41,12 +41,13 @@ public class ShopListAdapter extends RecyclerView.Adapter<ShopListHolder> {
         return shopLists.size();
     }
 
-    public void addItem(ShopList shopList) {
+    public void addItem(List<ShopList> shopList) {
 
-//        if(shopLists.isEmpty()){
-//            this.shopLists =  shopList;
-//        }else
-//            this.shopLists.add(shopList);
+        if(shopLists.isEmpty()){
+            this.shopLists=shopList;
+        }else{
+            this.shopLists.addAll(shopList);
+        }
         notifyDataSetChanged();
     }
 }

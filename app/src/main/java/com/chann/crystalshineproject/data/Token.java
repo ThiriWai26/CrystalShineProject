@@ -1,6 +1,7 @@
 package com.chann.crystalshineproject.data;
 
 public class Token {
+
     public static class MyToken{
         public static String getToken() {
 
@@ -12,4 +13,5 @@ public class Token {
         public MyToken(){
         }
     }
+
 }

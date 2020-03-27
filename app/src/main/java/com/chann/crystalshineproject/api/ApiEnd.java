@@ -13,8 +13,11 @@ import com.chann.crystalshineproject.data.TownsResponse;
 import com.chann.crystalshineproject.data.TownshipResponse;
 import com.chann.crystalshineproject.data.TownshipsResponse;
 
+import java.util.List;
+
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -41,7 +44,7 @@ public interface ApiEnd {
     Call<ShopListResponse> shopList(@Field("token") String token, @Field("township_id") int townshipId);
 
     @FormUrlEncoded
-    @POST("api/shops")
+    @POST("api/shop_details")
     Call<ShopDetailResponse> shopDetail(@Field("token") String token, @Field("shop_id") int shopId);
 
     @FormUrlEncoded
@@ -65,13 +68,13 @@ public interface ApiEnd {
     @POST("api/shop_categories")
     Call<ShopCategoriesResponse> shopCategory(@Field("token") String token);
 
-    @FormUrlEncoded
+    @Multipart
     @POST("api/shop_store")
-    Call<ShopStoreResponse> shopStore(@Field("token") String token, @Field("category_id") int categoryId, @Field("township_id") int townshipId, @Part MultipartBody.Part photo, @Field("rate") int rate, @Field("grade") int grade, @Field("name") String name, @Field("address") String address);
+    Call<ShopStoreResponse> shopStore(@Part("token") RequestBody token, @Part("category_id") int categoryId, @Part("township_id") int townshipId, @Part MultipartBody.Part photo, @Part("rate") List<String> rate, @Part("grade") String grade);
 
     @FormUrlEncoded
     @POST("api/shop_store/{id}")
-    Call<ShopStoreResponse> shopStoreUpdate(@Field("token") String token, @Field("category_id") int categoryId, @Field("township_id") int townshipId, @Part MultipartBody.Part photo, @Field("rate") int rate, @Field("grade") int grade, @Field("name") String name, @Field("address") String address);
+    Call<ShopStoreResponse> shopStoreUpdate(@Field("token") String token, @Field("category_id") int categoryId, @Field("township_id") int townshipId, @Part MultipartBody.Part photo, @Field("rate") int rate, @Field("grade") int grade, @Field("name") char name, @Field("address") String address);
 
     @FormUrlEncoded
     @POST("api/logout")

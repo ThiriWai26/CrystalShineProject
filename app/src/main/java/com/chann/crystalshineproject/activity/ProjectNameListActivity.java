@@ -62,15 +62,16 @@ public class ProjectNameListActivity extends AppCompatActivity implements Naviga
         adapter = new ProjectNameListAdapter(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.setAdapter(adapter);
-        token = Token.MyToken.getToken();
-        Log.e("token", token);
+
+        Bundle b = getIntent().getExtras();
+        token = b.getString("Token");
 
         initActivity();
         initApi();
     }
 
     private void initApi() {
-
+        Log.e("api","ok");
         RetrofitService.getApiEnd().projectNameList(token).enqueue(new Callback<ProjectNameListResponse>() {
             @Override
             public void onResponse(Call<ProjectNameListResponse> call, Response<ProjectNameListResponse> response) {
@@ -148,7 +149,8 @@ public class ProjectNameListActivity extends AppCompatActivity implements Naviga
 
     @Override
     public void onProjectListClick(int id) {
-        Intent intent = new Intent(getApplicationContext(), ShopListActivity.class);
+        Intent intent = new Intent(getApplicationContext(), TownshipListActivity.class);
+        intent.putExtra("Token", token);
         intent.putExtra("projectId", id);
         Log.e("projectId",String.valueOf(id));
         startActivity(intent);

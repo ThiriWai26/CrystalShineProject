@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"
+            android:background="#ffffff"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF"
+                app:popupTheme="@style/AppTheme.PopupOverlay">
+
+                <RelativeLayout
+                    android:id="@+id/relative"
+                    android:layout_width="match_parent"
+                    android:layout_height="?android:attr/actionBarSize">
+
+                    <TextView
+                        android:id="@+id/tvTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="80dp"
+                        android:layout_marginTop="16dp"
+                        android:text="Shop List"
+                        android:textAppearance="@android:style/TextAppearance.Medium"
+                        android:textColor="#000000"
+                        android:textStyle="bold"
+                        android:typeface="normal"
+                        tools:ignore="RtlCompat" />
+
+                    <TextView
+                        android:id="@+id/tvSave"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="Save"
+                        android:textColor="@color/colorAccent"
+                        android:layout_alignParentRight="true"
+                        android:layout_margin="18dp"
+                        android:onClick="onClickShopSave"/>
+
+                </RelativeLayout>
+            </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/appBarLayout"
+            android:layout_margin="@dimen/margin_xl"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/tvshopName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Shop Name"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/title_size" />
+
+<!--                <RatingBar-->
+<!--                    android:id="@+id/rating"-->
+<!--                    style="?android:attr/ratingBarStyleSmall"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_alignParentRight="true"-->
+<!--                    android:layout_marginRight="@dimen/margin_md"-->
+<!--                    tools:ignore="NotSibling,RtlCompat" />-->
+
+                <Spinner
+                    android:id="@+id/spinnergrade"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/margin_xl"
+                    android:background="@drawable/bg_login_btn_rounded"
+                    android:dropDownWidth="wrap_content"
+                    android:spinnerMode="dropdown" />
+
+                <Spinner
+                    android:id="@+id/spinnerrating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/bg_login_btn_rounded"
+                    android:dropDownWidth="wrap_content"
+                    android:spinnerMode="dropdown" />
+
+            </RelativeLayout>
+
+            <EditText
+                android:id="@+id/edtshopName"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="@dimen/margin_lg"
+                android:background="@drawable/bg_login_btn_rounded"
+                android:imeOptions="actionNext"
+                android:paddingLeft="15dp"
+                android:textColor="@color/grey_dark"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tvphoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Photo"
+                android:layout_marginTop="@dimen/margin_lg"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/title_size" />
+
+            <TextView
+                android:id="@+id/edtphoto"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="@dimen/margin_lg"
+                android:drawableEnd="@drawable/camera_gray"
+                android:background="@drawable/bg_login_btn_rounded"
+                android:imeOptions="actionNext"
+                android:paddingLeft="24dp"
+                android:paddingStart="24dp"
+                android:paddingRight="24dp"
+                android:textColor="@color/grey_dark"
+                android:textSize="14sp"
+                android:onClick="onPhoto"
+                tools:ignore="RtlCompat" />
+
+            <!--        <de.hdodenhof.circleimageview.CircleImageView-->
+            <!--            android:id="@+id/profile"-->
+            <!--            android:layout_width="90dp"-->
+            <!--            android:layout_height="90dp"-->
+            <!--            android:layout_marginTop="32dp"-->
+            <!--            app:civ_border_color="#a1a0a0"-->
+            <!--            app:civ_border_overlay="true"-->
+            <!--            app:civ_border_width="0dp"-->
+            <!--            app:civ_circle_background_color="@color/grey" />-->
+
+            <!--            <ImageView-->
+            <!--                android:id="@+id/camera"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginTop="@dimen/margin_lg"-->
+            <!--                android:onClick="onPhoto"-->
+            <!--                android:src="@drawable/camera_gray" />-->
+
+            <TextView
+                android:id="@+id/tvCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Category"
+                android:layout_marginTop="@dimen/margin_lg"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/title_size" />
+
+            <Spinner
+                android:id="@+id/spinnerCategory"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="@dimen/margin_lg"
+                android:background="@drawable/bg_login_btn_rounded"
+                android:dropDownWidth="wrap_content"
+                android:spinnerMode="dropdown" />
+
+
+            <TextView
+                android:id="@+id/tvtownship"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Township"
+                android:layout_marginTop="@dimen/margin_lg"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/title_size" />
+
+            <Spinner
+                android:id="@+id/spinnerTownship"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="@dimen/margin_lg"
+                android:background="@drawable/bg_login_btn_rounded"
+                android:dropDownWidth="wrap_content"
+                android:spinnerMode="dropdown" />
+
+            <TextView
+                android:id="@+id/tvAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Address"
+                android:layout_marginTop="@dimen/margin_lg"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/title_size" />
+
+            <EditText
+                android:id="@+id/edtAddress"
+                android:layout_width="match_parent"
+                android:layout_height="84dp"
+                android:layout_marginTop="@dimen/margin_lg"
+                android:background="@drawable/bg_login_btn_rounded"
+                android:imeOptions="actionNext"
+                android:paddingLeft="15dp"
+                android:textColor="@color/grey_dark"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <!--    <com.google.android.material.navigation.NavigationView-->
+        <!--        android:id="@+id/navView"-->
+        <!--        android:layout_width="250dp"-->
+        <!--        android:layout_height="match_parent"-->
+        <!--        android:layout_gravity="start"-->
+        <!--        android:fitsSystemWindows="true"-->
+        <!--        android:background="#E7DDDD"-->
+        <!--        app:headerLayout="@layout/nav_header_home_navi"-->
+        <!--        app:menu="@menu/bottom_nav_menu" />-->
+    </RelativeLayout>
+</layout>

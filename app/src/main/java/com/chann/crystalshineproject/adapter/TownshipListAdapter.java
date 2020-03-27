@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chann.crystalshineproject.data.Township;
 import com.chann.crystalshineproject.holder.TownshipListHolder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TownshipListAdapter extends RecyclerView.Adapter<TownshipListHolder> {
@@ -19,6 +20,7 @@ public class TownshipListAdapter extends RecyclerView.Adapter<TownshipListHolder
     public TownshipListAdapter(TownshipListHolder.OnTownshipItemClickListener listener){
 
         this.listener = listener;
+        townshipList = new ArrayList<>();
     }
 
 
@@ -38,11 +40,11 @@ public class TownshipListAdapter extends RecyclerView.Adapter<TownshipListHolder
         return townshipList.size();
     }
 
-    public void addItem(Township township) {
-//        if(townshipList.isEmpty()){
-//            this.townshipList = township;
-//        }else
-//            this.shopLists.add(shopList);
+    public void addItem(List<Township> township) {
+        if (township.isEmpty()) {
+            this.townshipList = township;
+        } else
+            this.townshipList.addAll(township);
         notifyDataSetChanged();
     }
 }

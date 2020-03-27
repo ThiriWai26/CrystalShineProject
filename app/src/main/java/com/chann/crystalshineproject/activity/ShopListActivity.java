@@ -21,9 +21,11 @@ import com.chann.crystalshineproject.R;
 import com.chann.crystalshineproject.adapter.ShopListAdapter;
 import com.chann.crystalshineproject.data.ShopList;
 import com.chann.crystalshineproject.data.ShopListResponse;
+import com.chann.crystalshineproject.data.ShopSearchResponse;
 import com.chann.crystalshineproject.data.Token;
 import com.chann.crystalshineproject.holder.ShopListHolder;
 import com.chann.crystalshineproject.service.RetrofitService;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
@@ -45,7 +47,8 @@ public class ShopListActivity extends AppCompatActivity implements NavigationVie
     private ShopListAdapter adapter;
     private LinearLayoutManager layoutManager;
     private RecyclerView recyclerView;
-    private SearchView searchView;
+    private androidx.appcompat.widget.SearchView searchView;
+    private FloatingActionButton floatingActionButton;
     private String token = null;
     private int townshipId = -1;
     List<ShopList> shopListList = new ArrayList<>();
@@ -56,23 +59,74 @@ public class ShopListActivity extends AppCompatActivity implements NavigationVie
 
         setContentView(R.layout.activity_shop_list);
         recyclerView = findViewById(R.id.recyclerView);
+        searchView = findViewById(R.id.sv);
+        floatingActionButton = findViewById(R.id.fab);
 
         adapter = new ShopListAdapter(this);
         layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
-        token = Token.MyToken.getToken();
 
         Bundle bundle = getIntent().getExtras();
         townshipId = bundle.getInt("townshipId");
-        Log.e("buildingId",String.valueOf(townshipId));
+        Log.e("townshipId",String.valueOf(townshipId));
+
+        Bundle b = getIntent().getExtras();
+        token = b.getString("Token");
 
         initActivity();
         initApi();
 
+        searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Log.e("onquerysubmit", query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Log.e("onquerysubmit", newText);
+
+                if(newText.isEmpty()) {
+                }
+                else {
+                    RetrofitService.getApiEnd().shopSearch(token,newText).enqueue(new Callback<ShopSearchResponse>() {
+                        @Override
+                        public void onResponse(Call<ShopSearchResponse> call, Response<ShopSearchResponse> response) {
+                            if(response.isSuccessful()){
+                                if(response.body().isSuccess){
+                                    Log.e("search","success");
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ShopSearchResponse> call, Throwable t) {
+
+                        }
+                    });
+                }
+                return false;
+            }
+        });
+
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.e("floatingbutton","click");
+
+                Intent intent = new Intent(getApplicationContext(), AddShopListActivity.class);
+                intent.putExtra("townshipId", townshipId );
+                startActivity(intent);
+
+            }
+        });
+
     }
 
     private void initApi() {
+        Log.e("api","success");
          RetrofitService.getApiEnd().shopList(token,townshipId).enqueue(new Callback<ShopListResponse>() {
              @Override
              public void onResponse(Call<ShopListResponse> call, Response<ShopListResponse> response) {
@@ -147,15 +201,15 @@ public class ShopListActivity extends AppCompatActivity implements NavigationVie
         return true;
     }
 
-    public void onEdit(View view) {
-        Intent intent = new Intent(getApplicationContext(), EditShopListActivity.class);
-        startActivity(intent);
-    }
 
 
     @Override
     public void onShopClick(int id) {
-        Intent intent = new Intent(getApplicationContext(), CheckInActivity.class);
+        Intent intent = new Intent(getApplicationContext(), ShopDetailActivity.class);
+        intent.putExtra("Token",token);
+        intent.putExtra("shopId", id);
         startActivity(intent);
     }
+
+
 }
