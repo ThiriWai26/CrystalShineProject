@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<androidx.core.widget.NestedScrollView
+    xmlns:android ="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nested"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbarSize="0dp">
+
     <RelativeLayout
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout"
@@ -81,25 +87,6 @@
 <!--                    android:layout_marginRight="@dimen/margin_md"-->
 <!--                    tools:ignore="NotSibling,RtlCompat" />-->
 
-                <Spinner
-                    android:id="@+id/spinnergrade"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="@dimen/margin_xl"
-                    android:background="@drawable/bg_login_btn_rounded"
-                    android:dropDownWidth="wrap_content"
-                    android:spinnerMode="dropdown" />
-
-                <Spinner
-                    android:id="@+id/spinnerrating"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="8dp"
-                    android:layout_alignParentRight="true"
-                    android:background="@drawable/bg_login_btn_rounded"
-                    android:dropDownWidth="wrap_content"
-                    android:spinnerMode="dropdown" />
 
             </RelativeLayout>
 
@@ -176,6 +163,24 @@
 
 
             <TextView
+                android:id="@+id/tvtown"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Town"
+                android:layout_marginTop="@dimen/margin_lg"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/title_size" />
+
+            <Spinner
+                android:id="@+id/spinnertown"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="@dimen/margin_lg"
+                android:dropDownWidth="wrap_content"
+                android:spinnerMode="dropdown" />
+
+
+            <TextView
                 android:id="@+id/tvtownship"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -189,7 +194,40 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginTop="@dimen/margin_lg"
-                android:background="@drawable/bg_login_btn_rounded"
+                android:dropDownWidth="wrap_content"
+                android:spinnerMode="dropdown" />
+
+            <TextView
+                android:id="@+id/tvRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rating"
+                android:layout_marginTop="@dimen/margin_lg"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/title_size" />
+
+            <Spinner
+                android:id="@+id/spinnerrating"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="@dimen/margin_lg"
+                android:dropDownWidth="wrap_content"
+                android:spinnerMode="dropdown" />
+
+            <TextView
+                android:id="@+id/tvGrade"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Grade"
+                android:layout_marginTop="@dimen/margin_lg"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/title_size" />
+
+            <Spinner
+                android:id="@+id/spinnergrade"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="@dimen/margin_lg"
                 android:dropDownWidth="wrap_content"
                 android:spinnerMode="dropdown" />
 
@@ -225,4 +263,4 @@
         <!--        app:headerLayout="@layout/nav_header_home_navi"-->
         <!--        app:menu="@menu/bottom_nav_menu" />-->
     </RelativeLayout>
-</layout>
+</androidx.core.widget.NestedScrollView>

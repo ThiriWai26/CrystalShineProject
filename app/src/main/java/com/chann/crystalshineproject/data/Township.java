@@ -11,6 +11,4 @@ public class Township {
     @SerializedName("name")
     public String name;
 
-    @SerializedName("error_message")
-    public String errorMessage;
 }
