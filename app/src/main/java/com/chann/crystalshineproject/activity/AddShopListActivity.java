@@ -7,6 +7,8 @@ import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.Manifest;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -25,9 +27,11 @@ import android.widget.Toast;
 
 import com.chann.crystalshineproject.R;
 import com.chann.crystalshineproject.adapter.SpinnerCategoryAdapter;
+import com.chann.crystalshineproject.data.ShopCategoriesResponse;
 import com.chann.crystalshineproject.data.ShopCategory;
 import com.chann.crystalshineproject.data.ShopStoreResponse;
 import com.chann.crystalshineproject.data.Token;
+import com.chann.crystalshineproject.data.TownsResponse;
 import com.chann.crystalshineproject.databinding.ActivityEditShopListBinding;
 import com.chann.crystalshineproject.service.RetrofitService;
 
@@ -45,7 +49,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AddShopListActivity extends AppCompatActivity implements Spinner.OnItemSelectedListener{
+public class AddShopListActivity extends AppCompatActivity {
 
     private EditText edtshopName, edtaddress;
     private TextView tvphoto;
@@ -63,10 +67,9 @@ public class AddShopListActivity extends AppCompatActivity implements Spinner.On
 
     private int categoryId = 1;
     private int townshipId = -1;
-    List<String> categories = new ArrayList<>();
-    List<String> townships = new ArrayList<>();
     List<String> rate = new ArrayList<>();
     List<String> grades = new ArrayList<>();
+    List<String> categories = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,24 +94,57 @@ public class AddShopListActivity extends AppCompatActivity implements Spinner.On
         townshipId = bundle.getInt("townshipId");
         Log.e("townshipId",String.valueOf(townshipId));
 
+        token = bundle.getString("token");
+        Log.e("token", token);
 
-        categories.add("Eos");
-        categories.add("Mollita");
-        categories.add("Offica");
-        categories.add("Commoidi");
-        categories.add("Cum est");
-        ArrayAdapter adapter = new ArrayAdapter<String>(getBaseContext(), R.layout.spinner_item, categories);
-        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-        spinnerCategory.setAdapter(adapter);
+        loadSpinnerCategory();
+        spinnerCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String s=   spinnerCategory.getItemAtPosition(spinnerCategory.getSelectedItemPosition()).toString();
+                Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                // DO Nothing here
+            }
+        });
 
-        townships.add("East Murray");
-        townships.add("East Palmaburgh");
-        townships.add("South Breannamouth");
-        townships.add("Mayaville");
-        townships.add("East Nicotown");
-        ArrayAdapter adapter1 = new ArrayAdapter<String>(this,R.layout.spinner_item, townships);
-        adapter1.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-        spinnerTownship.setAdapter(adapter1);
+        RetrofitService.getApiEnd().towns(token).enqueue(new Callback<TownsResponse>() {
+            @Override
+            public void onResponse(Call<TownsResponse> call, Response<TownsResponse> response) {
+                if(response.isSuccessful()){
+                    if(response.body().isSuccess){
+                        Log.e("response.body","success");
+
+
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TownsResponse> call, Throwable t) {
+
+            }
+        });
+
+//        categories.add("Eos");
+//        categories.add("Mollita");
+//        categories.add("Offica");
+//        categories.add("Commoidi");
+//        categories.add("Cum est");
+//        spinnerCategory.setAdapter(adapter);
+
+
+//
+//        townships.add("East Murray");
+//        townships.add("East Palmaburgh");
+//        townships.add("South Breannamouth");
+//        townships.add("Mayaville");
+//        townships.add("East Nicotown");
+//        ArrayAdapter adapter1 = new ArrayAdapter<String>(this,R.layout.spinner_item, townships);
+//        adapter1.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+//        spinnerTownship.setAdapter(adapter1);
 
         rate.add("1");
         rate.add("2");
@@ -128,6 +164,40 @@ public class AddShopListActivity extends AppCompatActivity implements Spinner.On
         gradesAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         spinnerGrade.setAdapter(gradesAdapter);
 
+    }
+
+    private void loadSpinnerCategory() {
+        RetrofitService.getApiEnd().shopCategory(token).enqueue(new Callback<ShopCategoriesResponse>() {
+            @Override
+            public void onResponse(Call<ShopCategoriesResponse> call, Response<ShopCategoriesResponse> response) {
+                if(response.isSuccessful()){
+                    if(response.body().isSuccess){
+                        Log.e("response.body","success");
+                        List<ShopCategory> shopCategory = response.body().shopCategory;
+
+                        for(int i=0; i<shopCategory.size(); i++)
+                        {
+                            categories.add(shopCategory.get(i).name);
+                            Log.e("size", String.valueOf(response.body().shopCategory.size()));
+                        }
+                        ArrayAdapter adapter = new ArrayAdapter<>(AddShopListActivity.this, R.layout.spinner_item, response.body().shopCategory);
+                        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+                        spinnerCategory.setAdapter(adapter);
+                    }
+                    else{
+                        Log.e("response.body","fail");
+                    }
+                }
+                else{
+                    Log.e("response","fail");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ShopCategoriesResponse> call, Throwable t) {
+                Log.e("failure", t.toString());
+            }
+        });
 
     }
 
@@ -209,7 +279,6 @@ public class AddShopListActivity extends AppCompatActivity implements Spinner.On
         Log.e("file name",file.getName());
         Log.e("api","start");
 
-
         name = edtshopName.getText().toString();
         address = edtaddress.getText().toString();
         img = tvphoto.getText().toString();
@@ -263,14 +332,5 @@ public class AddShopListActivity extends AppCompatActivity implements Spinner.On
 
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
-
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
-    }
 }

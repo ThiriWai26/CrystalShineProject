@@ -21,13 +21,13 @@ public class SpinnerCategoryAdapter extends ArrayAdapter<String> {
     private List<ShopCategory> shopCategoryList;
     private int mResource;
 
-    public SpinnerCategoryAdapter(@NonNull Context context, int resource, @NonNull List<String> objects) {
-        super(context, resource, objects);
+    public SpinnerCategoryAdapter(Context context, int resource, List<ShopCategory> shopCategorie) {
+        super(context, resource);
 
         mcontext = context;
         layoutInflater = LayoutInflater.from(context);
         mResource = resource;
-//        shopCategoryList  = objects;
+        shopCategoryList = shopCategorie;
     }
 
 
@@ -45,7 +45,9 @@ public class SpinnerCategoryAdapter extends ArrayAdapter<String> {
     private View createItemView(int position, View convertView, ViewGroup parent) {
 
         ShopCategory shopCategory = shopCategoryList.get(position);
-        Log.e("shopcategory", String.valueOf(shopCategory));
+        Log.e("shopCategory", String.valueOf(shopCategory));
+
+        shopCategoryList.get(position);
 
         return convertView;
     }

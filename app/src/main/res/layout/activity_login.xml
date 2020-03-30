@@ -36,8 +36,8 @@
                         android:layout_height="48dp"
                         android:hint="@string/hint_ph_no"
                         android:background="@drawable/bg_login_btn_rounded"
-                        android:inputType="phone"
-                        android:imeOptions="actionNext"
+                        android:inputType="textPersonName"
+                        android:imeOptions="actionDone"
                         android:paddingLeft="15dp"
                         android:textColor="@color/grey_dark"
                         android:textSize="14sp" />

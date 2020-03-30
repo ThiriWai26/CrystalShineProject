@@ -69,4 +69,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     //compressor
     implementation 'id.zelory:compressor:2.1.0'
+    implementation 'com.google.android.gms:play-services-maps:16.1.0'
+
+
 }

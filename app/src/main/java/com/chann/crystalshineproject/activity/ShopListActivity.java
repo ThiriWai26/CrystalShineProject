@@ -118,6 +118,7 @@ public class ShopListActivity extends AppCompatActivity implements NavigationVie
 
                 Intent intent = new Intent(getApplicationContext(), AddShopListActivity.class);
                 intent.putExtra("townshipId", townshipId );
+                intent.putExtra("token", token);
                 startActivity(intent);
 
             }

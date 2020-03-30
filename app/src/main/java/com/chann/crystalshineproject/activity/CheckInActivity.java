@@ -11,10 +11,14 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -32,7 +36,9 @@ import com.chann.crystalshineproject.service.RetrofitService;
 import com.google.android.material.navigation.NavigationView;
 
 import java.io.File;
+import java.io.IOException;
 
+import id.zelory.compressor.Compressor;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -52,6 +58,8 @@ public class CheckInActivity extends AppCompatActivity implements NavigationView
     private int projectId = -1;
     private double latitude;
     private double longitude;
+    private static final int REQUEST_LOCATION = 1;
+    private LocationManager locationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +96,10 @@ public class CheckInActivity extends AppCompatActivity implements NavigationView
         btnsubmit = findViewById(R.id.btnsubmit);
 
         Bundle bundle = getIntent().getExtras();
+
+        token = bundle.getString("Token");
+        Log.e("token", token);
+
         shopId = bundle.getInt("shopId");
         Log.e("shopId",String.valueOf(shopId));
 
@@ -96,9 +108,36 @@ public class CheckInActivity extends AppCompatActivity implements NavigationView
 
         token = Token.MyToken.getToken();
 
+        imgcamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.e("onclicksave", "ok");
+                RequestBody token = RequestBody.create( MediaType.parse("multipart/form-data"), Token.MyToken.getToken());
+                MultipartBody.Part photo = null;
+                File file = new File(imagePath);
+                Log.e("originalfilesize",String.valueOf(file.length()/1024));
+                File compressFile = null;
+
+                try {
+                    compressFile = new Compressor(getApplicationContext()).compressToFile(file);
+                    Log.e("compressfilesize",String.valueOf(compressFile.length()/1024));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                Log.e("fileimagePath",imagePath);
+                RequestBody imageBody = RequestBody.create( MediaType.parse("multipart/form-data"), file);
+                photo = MultipartBody.Part.createFormData("image",file.getName(),imageBody);
+                Log.e("file name",file.getName());
+                Log.e("api","start");
+
+            }
+        });
     }
 
     public void onClickCamera(View view) {
+
+        Log.e("photoclick","ok");
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -126,49 +165,19 @@ public class CheckInActivity extends AppCompatActivity implements NavigationView
             imgcamera.setImageURI(uri);
             
             imagePath = getImageFilePath(data.getData());
-            
-            if(imagePath==null){
-                Log.e("Image Path","null");
-            }
-            else{
-                Log.e("Image Path",imagePath);
-                uploadServer(imagePath);
-            }
+//
+//            if(imagePath==null){
+//                Log.e("Image Path","null");
+//            }
+//            else{
+//                Log.e("Image Path",imagePath);
+//                uploadServer(imagePath);
+//            }
         }
     }
 
-    private void uploadServer(String imagePath) {
-
-        MultipartBody.Part photo = null;
-        File file = new File(imagePath);
-
-        RequestBody imageBody = RequestBody.create( MediaType.parse("multipart/form-data"),file);
-        photo = MultipartBody.Part.createFormData("image",file.getName(),imageBody);
-
-        Log.e("file name",file.getName());
-
-        RetrofitService.getApiEnd().shopReport(token,shopId,projectId,photo,latitude,longitude).enqueue(new Callback<ShopReportResponse>() {
-            @Override
-            public void onResponse(Call<ShopReportResponse> call, Response<ShopReportResponse> response) {
-                if(response.isSuccessful()){
-                    if(response.body().isSuccess){
-                        Log.e("upload","success");
-                    }
-                    else{
-                        Log.e("response.body","success");
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ShopReportResponse> call, Throwable t) {
-
-            }
-        });
-
-    }
-
     private String getImageFilePath(Uri data) {
+
         File file = new File(data.getPath());
         String[] filePath = file.getPath().split(":");
         String image_id = filePath[filePath.length - 1];
@@ -178,12 +187,16 @@ public class CheckInActivity extends AppCompatActivity implements NavigationView
             String imagePath = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
             cursor.close();
             Log.e("imagePath",imagePath);
+
+            String imageName = file.getName();
+            Log.e("imageName", imageName);
+            Log.e("imageName", file.getName());
+
             return  imagePath;
         }
 
-        return null;
+        return data.getPath();
     }
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         int id = menuItem.getItemId();
@@ -216,6 +229,26 @@ public class CheckInActivity extends AppCompatActivity implements NavigationView
     }
 
     public void onSubmit(View view) {
+
+
+        if (ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+        } else {
+            @SuppressLint("MissingPermission")
+            Location locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if (locationGPS != null) {
+                double lat = locationGPS.getLatitude();
+                double longi = locationGPS.getLongitude();
+                latitude = lat;
+                longitude = longi;
+                Toast.makeText(this, "Your Location: \" + \"\\n\" + \"Latitude:" + latitude + "\n" + "Longitude: " + longitude, Toast.LENGTH_SHORT).show();
+
+            } else {
+                Toast.makeText(this, "Unable to find location.", Toast.LENGTH_SHORT).show();
+            }
+        }
+
         Intent intent = new Intent(getApplicationContext(), ProjectNameListActivity.class);
         startActivity(intent);
     }
