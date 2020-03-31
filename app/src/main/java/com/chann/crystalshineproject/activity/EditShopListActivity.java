@@ -91,6 +91,8 @@ public class EditShopListActivity extends AppCompatActivity implements Navigatio
     private char name =' ';
     private String address = null;
 
+    List<String> categories = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -151,30 +153,25 @@ public class EditShopListActivity extends AppCompatActivity implements Navigatio
         grade = bundle.getInt("grade");
         Log.e("grade", String.valueOf(grade));
 
-//        spinnerCategoryAdapter = new SpinnerCategoryAdapter(this, R.layout.spinner_item, shopCategory.name);
+        loadSpinnerCategory();
+        spinnerCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String s=   spinnerCategory.getItemAtPosition(spinnerCategory.getSelectedItemPosition()).toString();
+                Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                // DO Nothing here
+            }
+        });
 
-//        spinnerCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        loadSpinnerTown();
+//        spinnerTown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 //            @Override
 //            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-//                Log.e("api","success");
-//                RetrofitService.getApiEnd().shopCategory(token).enqueue(new Callback<ShopCategoriesResponse>() {
-//                    @Override
-//                    public void onResponse(Call<ShopCategoriesResponse> call, Response<ShopCategoriesResponse> response) {
-//                        if(response.isSuccessful()){
-//                            if(response.body().isSuccess){
-//                                Log.e("response.body","success");
-//
-////                                adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_item);
-////                                spinnerCategory.setAdapter(adapter);
-//                            }
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<ShopCategoriesResponse> call, Throwable t) {
-//
-//                    }
-//                });
+//                String s = spinnerTown.getItemAtPosition(spinnerTown.getSelectedItemPosition()).toString();
+//                Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
 //            }
 //
 //            @Override
@@ -182,26 +179,45 @@ public class EditShopListActivity extends AppCompatActivity implements Navigatio
 //
 //            }
 //        });
-        String[] data = {"Eos", "Mollita", "Offica", "Commoidi", "Cum est"};
-        String[] data1 = {"East Murray", "Palmaburgh", "South Breannamouth", "Mayaville", "East Nicotown"};
-
-        ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.spinner_item, data);
-        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-        spinnerCategory.setAdapter(adapter);
-
-        ArrayAdapter adapter1 = new ArrayAdapter<String>(this,R.layout.spinner_item, data1);
-        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-        spinnerTownship.setAdapter(adapter1);
-
-        ratingBar.setRating(rate);
-
-//        adapter = new ArrayAdapter<String>(getBaseContext(), R.layout.spinner_item,townships);
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//
-//        spinnerCategory.setAdapter(adapter);
-//        spinnerTownship.setAdapter(adapter);
 
         }
+
+    private void loadSpinnerTown() {
+    }
+
+    private void loadSpinnerCategory() {
+        RetrofitService.getApiEnd().shopCategory(token).enqueue(new Callback<ShopCategoriesResponse>() {
+            @Override
+            public void onResponse(Call<ShopCategoriesResponse> call, Response<ShopCategoriesResponse> response) {
+                if(response.isSuccessful()){
+                    if(response.body().isSuccess){
+                        Log.e("response.body","success");
+                        List<ShopCategory> shopCategory = response.body().shopCategory;
+
+                        for(int i=0; i<shopCategory.size(); i++)
+                        {
+                            categories.add(shopCategory.get(i).name);
+                            Log.e("size", String.valueOf(response.body().shopCategory.size()));
+                        }
+                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(EditShopListActivity.this, R.layout.spinner_item, categories);
+                        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+                        spinnerCategory.setAdapter(adapter);
+                    }
+                    else{
+                        Log.e("response.body","fail");
+                    }
+                }
+                else{
+                    Log.e("response","fail");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ShopCategoriesResponse> call, Throwable t) {
+                Log.e("failure", t.toString());
+            }
+        });
+    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {

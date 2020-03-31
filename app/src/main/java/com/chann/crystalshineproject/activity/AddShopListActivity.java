@@ -121,7 +121,45 @@ public class AddShopListActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String s = spinnerTown.getItemAtPosition(spinnerTown.getSelectedItemPosition()).toString();
+                String name = spinnerTown.getSelectedItem().toString();
+                int townId = (int) spinnerTown.getSelectedItemId();
+                Log.e("name", name);
+                Log.e("id", String.valueOf(townId));
                 Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
+
+                Log.e("token", token);
+                Log.e("townId", String.valueOf(townId));
+
+                RetrofitService.getApiEnd().townships(token,townId).enqueue(new Callback<TownshipsResponse>() {
+                    @Override
+                    public void onResponse(Call<TownshipsResponse> call, Response<TownshipsResponse> response) {
+                        if(response.isSuccessful()){
+                            if (response.body().isSuccess) {
+                                Log.e("response.body","success");
+                                List<Township> township = response.body().township;
+
+                                for(int i=0; i<township.size(); i++){
+                                    townships.add(township.get(i).name);
+                                    Log.e("township_size", String.valueOf(response.body().township.size()));
+                                }
+                                ArrayAdapter<String> adapter = new ArrayAdapter<>(AddShopListActivity.this, R.layout.spinner_item, townships);
+                                adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+                                spinnerTownship.setAdapter(adapter);
+                            }
+                            else{
+                                Log.e("response.body","fail");
+                            }
+                        }
+                        else{
+                            Log.e("response","fail");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<TownshipsResponse> call, Throwable t) {
+                        Log.e("failure", t.toString());
+                    }
+                });
             }
 
             @Override
@@ -129,8 +167,6 @@ public class AddShopListActivity extends AppCompatActivity {
 
             }
         });
-
-//        loadspinnerTownship();
 
         grades.add("A");
         grades.add("B");
@@ -174,42 +210,7 @@ public class AddShopListActivity extends AppCompatActivity {
             }
         });
 
-
     }
-
-//    private void loadspinnerTownship() {
-//        RetrofitService.getApiEnd().townships(token,townId).enqueue(new Callback<TownshipsResponse>() {
-//            @Override
-//            public void onResponse(Call<TownshipsResponse> call, Response<TownshipsResponse> response) {
-//                if(response.isSuccessful()){
-//                    if (response.body().isSuccess) {
-//                        Log.e("response.body","success");
-//                        List<Township> township = response.body().township;
-//
-//                        for(int i=0; i<township.size(); i++){
-//                            townships.add(township.get(i).name);
-//                            Log.e("size", String.valueOf(response.body().township.size()));
-//                        }
-//                        ArrayAdapter<String> adapter = new ArrayAdapter<>(AddShopListActivity.this, R.layout.spinner_item, townships);
-//                        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-//                        spinnerCategory.setAdapter(adapter);
-//                    }
-//                    else{
-//                        Log.e("response.body","fail");
-//                    }
-//                }
-//                else{
-//                    Log.e("response","fail");
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<TownshipsResponse> call, Throwable t) {
-//                Log.e("failure", t.toString());
-//            }
-//        });
-//
-//    }
 
     private void loadSpinnerCategory() {
         RetrofitService.getApiEnd().shopCategory(token).enqueue(new Callback<ShopCategoriesResponse>() {
@@ -223,7 +224,7 @@ public class AddShopListActivity extends AppCompatActivity {
                         for(int i=0; i<shopCategory.size(); i++)
                         {
                             categories.add(shopCategory.get(i).name);
-                            Log.e("size", String.valueOf(response.body().shopCategory.size()));
+                            Log.e("category_size", String.valueOf(response.body().shopCategory.size()));
                         }
                         ArrayAdapter<String> adapter = new ArrayAdapter<String>(AddShopListActivity.this, R.layout.spinner_item, categories);
                         adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
@@ -257,11 +258,12 @@ public class AddShopListActivity extends AppCompatActivity {
 
                         for (int i = 0; i < town.size(); i++) {
                             towns.add(town.get(i).name);
-                            Log.e("size", String.valueOf(response.body().towns.size()));
+                            Log.e("town_size", String.valueOf(response.body().towns.size()));
                         }
                         ArrayAdapter<String> adapter = new ArrayAdapter<String>(AddShopListActivity.this, R.layout.spinner_item, towns);
                         adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
                         spinnerTown.setAdapter(adapter);
+
                     }
                 }
             }
@@ -272,7 +274,6 @@ public class AddShopListActivity extends AppCompatActivity {
             }
         });
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -334,6 +335,7 @@ public class AddShopListActivity extends AppCompatActivity {
 
         Log.e("onclicksave", "ok");
         RequestBody token = RequestBody.create( MediaType.parse("multipart/form-data"), Token.MyToken.getToken());
+        Log.e("Token", String.valueOf(token));
         MultipartBody.Part photo = null;
         File file = new File(imagePath);
         Log.e("originalfilesize",String.valueOf(file.length()/1024));
@@ -346,9 +348,11 @@ public class AddShopListActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+
+        Log.e("file name",file.getName());
         Log.e("fileimagePath",imagePath);
         RequestBody imageBody = RequestBody.create( MediaType.parse("multipart/form-data"), file);
-        photo = MultipartBody.Part.createFormData("image",file.getName(),imageBody);
+        photo = MultipartBody.Part.createFormData("photo",file.getName(),imageBody);
         Log.e("file name",file.getName());
         Log.e("api","start");
 
@@ -370,6 +374,7 @@ public class AddShopListActivity extends AppCompatActivity {
         Log.e("token", Token.MyToken.getToken());
         Log.e("categoryId", String.valueOf(categoryId));
         Log.e("townshipId", String.valueOf(townshipId));
+        Log.e("photo", file.getName());
 
         Log.e("bind","success");
         RetrofitService.getApiEnd().shopStore(token,categoryId,townshipId,photo,rate,grade).enqueue(new Callback<ShopStoreResponse>() {
@@ -379,11 +384,10 @@ public class AddShopListActivity extends AppCompatActivity {
                 if(response.isSuccessful()){
                     if(response.body().isSuccess){
                         Log.e("response.body","success");
-                        Toast.makeText(AddShopListActivity.this, "Add Shop List Success", Toast.LENGTH_LONG).show();
+                        Toast.makeText(AddShopListActivity.this, "Add Success", Toast.LENGTH_LONG).show();
 
                         Intent intent = new Intent(getApplicationContext() , LoginActivity.class);
                         startActivity(intent);
-
                     }
                     else {
                         Log.e("upload","fail");
@@ -397,7 +401,7 @@ public class AddShopListActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ShopStoreResponse> call, Throwable t) {
-
+                Log.e("failure", t.toString());
             }
         });
 
