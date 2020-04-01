@@ -47,10 +47,9 @@ public interface ApiEnd {
     @POST("api/shop_details")
     Call<ShopDetailResponse> shopDetail(@Field("token") String token, @Field("shop_id") int shopId);
 
-    @FormUrlEncoded
+    @Multipart
     @POST("api/shop_report")
-    Call<ShopReportResponse> shopReport(@Field("token") String token, @Field("shop_id") int shopId, @Field("project_id") int projectId, @Part MultipartBody.Part photo, @Field("latitude") double latitude, @Field("longitude") double longitude);
-
+    Call<ShopReportResponse> shopReport(@Part("token") RequestBody token, @Part("shop_id") int shopId, @Part("project_id") int projectId, @Part MultipartBody.Part photo, @Part("latitude") double latitude, @Part("longitude") double longitude);
 
     @FormUrlEncoded
     @POST("api/shop_search")
@@ -72,9 +71,9 @@ public interface ApiEnd {
     @POST("api/shop_store")
     Call<ShopStoreResponse> shopStore(@Part("token") RequestBody token, @Part("category_id") int categoryId, @Part("township_id") int townshipId, @Part MultipartBody.Part photo, @Part("rate") List<String> rate, @Part("grade") String grade);
 
-    @FormUrlEncoded
+    @Multipart
     @POST("api/shop_store/{id}")
-    Call<ShopStoreResponse> shopStoreUpdate(@Field("token") String token, @Field("category_id") int categoryId, @Field("township_id") int townshipId, @Part MultipartBody.Part photo, @Field("rate") int rate, @Field("grade") int grade, @Field("name") char name, @Field("address") String address);
+    Call<ShopStoreResponse> shopStoreUpdate(@Part("token") RequestBody token, @Part("category_id") int categoryId, @Part("township_id") int townshipId, @Part MultipartBody.Part photo, @Part("rate") List<String> rate, @Part("grade") String grade, @Part("name") String name, @Part("address") String address);
 
     @FormUrlEncoded
     @POST("api/logout")

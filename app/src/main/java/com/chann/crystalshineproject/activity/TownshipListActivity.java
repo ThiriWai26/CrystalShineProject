@@ -165,6 +165,7 @@ public class TownshipListActivity extends AppCompatActivity implements Navigatio
     public void onTownshipClick(int id) {
         Intent intent = new Intent(getApplicationContext(), ShopListActivity.class);
         intent.putExtra("townshipId", id);
+        intent.putExtra("projectId", id);
         intent.putExtra("Token",token);
         Log.e("townshipId",String.valueOf(id));
         startActivity(intent);

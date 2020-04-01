@@ -4,9 +4,10 @@
     package="com.chann.crystalshineproject">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission. ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -17,7 +18,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activity.AddShopListActivity"></activity>
+        <activity android:name=".activity.MapActivity"></activity>
+        <activity android:name=".activity.MapExampleActivity" />
+        <activity android:name=".activity.AddShopListActivity" />
         <activity android:name=".activity.TownshipActivity" />
         <activity android:name=".activity.TownActivity" />
         <activity android:name=".activity.TownshipListActivity" />

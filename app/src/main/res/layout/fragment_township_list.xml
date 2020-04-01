@@ -45,14 +45,14 @@
                             android:typeface="normal"
                             android:textSize="16sp"/>
 
-                        <ImageView
-                            android:id="@+id/imgsetting"
-                            android:layout_width="24dp"
-                            android:layout_height="match_parent"
-                            android:layout_alignParentRight="true"
-                            android:layout_marginRight="40dp"
-                            android:src="@drawable/setting"
-                            android:onClick="onFilterClick"/>
+<!--                        <ImageView-->
+<!--                            android:id="@+id/imgsetting"-->
+<!--                            android:layout_width="24dp"-->
+<!--                            android:layout_height="match_parent"-->
+<!--                            android:layout_alignParentRight="true"-->
+<!--                            android:layout_marginRight="40dp"-->
+<!--                            android:src="@drawable/setting"-->
+<!--                            android:onClick="onFilterClick"/>-->
 
                     </RelativeLayout>
                 </androidx.appcompat.widget.Toolbar>

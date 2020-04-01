@@ -2,6 +2,7 @@ package com.chann.crystalshineproject.activity;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -35,7 +36,6 @@ import com.chann.crystalshineproject.data.Towns;
 import com.chann.crystalshineproject.data.TownsResponse;
 import com.chann.crystalshineproject.data.Township;
 import com.chann.crystalshineproject.data.TownshipsResponse;
-import com.chann.crystalshineproject.databinding.ActivityEditShopListBinding;
 import com.chann.crystalshineproject.service.RetrofitService;
 
 import java.io.File;
@@ -57,6 +57,7 @@ public class AddShopListActivity extends AppCompatActivity {
     private EditText edtshopName, edtaddress;
     private TextView tvphoto;
     private Spinner spinnerCategory, spinnerTownship, spinnerTown, spinnerRating, spinnerGrade;
+    private DrawerLayout mDrawerLayout;
 
     private String imagePath = "";
     private String token = null;
@@ -68,7 +69,7 @@ public class AddShopListActivity extends AppCompatActivity {
     private String rating;
     private String grade;
 
-    private int categoryId = 1;
+    private int categoryId;
     private int townshipId = -1;
     List<String> rate = new ArrayList<>();
     List<String> grades = new ArrayList<>();
@@ -82,6 +83,20 @@ public class AddShopListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_shop_list);
 
         init();
+        Toolbar toolbar =  findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+//                this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+//        mDrawerLayout.addDrawerListener(toggle);
+//        toggle.syncState();
+//
+//        NavigationView navigationView = (NavigationView) findViewById(R.id.navView);
+//        navigationView.setNavigationItemSelectedListener(this);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_dehaze_black_24dp);
     }
 
     private void init() {
@@ -101,13 +116,14 @@ public class AddShopListActivity extends AppCompatActivity {
         Log.e("townshipId",String.valueOf(townshipId));
 
         token = bundle.getString("token");
-        Log.e("token", token);
 
         loadSpinnerCategory();
         spinnerCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String s=   spinnerCategory.getItemAtPosition(spinnerCategory.getSelectedItemPosition()).toString();
+                categoryId = (int) spinnerCategory.getSelectedItemId()+1;
+                Log.e("CategoryId", String.valueOf(categoryId));
                 Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
             }
             @Override
@@ -123,7 +139,7 @@ public class AddShopListActivity extends AppCompatActivity {
                 String s = spinnerTown.getItemAtPosition(spinnerTown.getSelectedItemPosition()).toString();
                 String name = spinnerTown.getSelectedItem().toString();
                 int townId = (int) spinnerTown.getSelectedItemId();
-                Log.e("name", name);
+                Log.e("name", spinnerTown.getSelectedItem().toString());
                 Log.e("id", String.valueOf(townId));
                 Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
 
@@ -386,8 +402,6 @@ public class AddShopListActivity extends AppCompatActivity {
                         Log.e("response.body","success");
                         Toast.makeText(AddShopListActivity.this, "Add Success", Toast.LENGTH_LONG).show();
 
-                        Intent intent = new Intent(getApplicationContext() , LoginActivity.class);
-                        startActivity(intent);
                     }
                     else {
                         Log.e("upload","fail");
@@ -408,6 +422,8 @@ public class AddShopListActivity extends AppCompatActivity {
 
 
     }
+
+
 
 
 }

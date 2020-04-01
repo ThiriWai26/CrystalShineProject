@@ -1,63 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-<RelativeLayout
+<androidx.core.widget.NestedScrollView
+    xmlns:android ="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nested"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:scrollbarSize="0dp">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="?android:attr/actionBarSize"
-        android:background="#ffffff"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:layout_height="match_parent">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#FFFFFF"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
+            android:layout_height="?android:attr/actionBarSize"
+            android:background="#ffffff"
+            android:theme="@style/AppTheme.AppBarOverlay">
 
-            <RelativeLayout
-                android:id="@+id/relative"
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="?android:attr/actionBarSize">
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF"
+                app:popupTheme="@style/AppTheme.PopupOverlay">
 
-                <TextView
-                    android:id="@+id/tvTitle"
+                <RelativeLayout
+                    android:id="@+id/relative"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="80dp"
-                    android:layout_marginTop="16dp"
-                    android:text="Shop List"
-                    android:textAppearance="@android:style/TextAppearance.Medium"
-                    android:textColor="#000000"
-                    android:textStyle="bold"
-                    android:typeface="normal"
-                    tools:ignore="RtlCompat" />
+                    android:layout_height="?android:attr/actionBarSize">
 
-                <TextView
-                    android:id="@+id/tvSave"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="Save"
-                    android:textColor="@color/colorAccent"
-                    android:layout_alignParentRight="true"
-                    android:layout_margin="18dp"
-                    android:onClick="onClickSave"/>
+                    <TextView
+                        android:id="@+id/tvTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="80dp"
+                        android:layout_marginTop="16dp"
+                        android:text="Shop List"
+                        android:textAppearance="@android:style/TextAppearance.Medium"
+                        android:textColor="#000000"
+                        android:textStyle="bold"
+                        android:typeface="normal"
+                        tools:ignore="RtlCompat" />
 
-            </RelativeLayout>
-        </androidx.appcompat.widget.Toolbar>
-    </com.google.android.material.appbar.AppBarLayout>
+                    <TextView
+                        android:id="@+id/tvSave"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="Save"
+                        android:textColor="@color/colorAccent"
+                        android:layout_alignParentRight="true"
+                        android:layout_margin="18dp"
+                        android:onClick="onClickShopSave"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/appBarLayout"
-        android:layout_margin="@dimen/margin_xl"
-        android:orientation="vertical">
+                </RelativeLayout>
+            </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/appBarLayout"
+            android:layout_margin="@dimen/margin_xl"
+            android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -72,14 +78,15 @@
                     android:textColor="@color/gray"
                     android:textSize="@dimen/title_size" />
 
-                <RatingBar
-                    android:id="@+id/rating"
-                    style="?android:attr/ratingBarStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="@dimen/margin_md"
-                    tools:ignore="NotSibling,RtlCompat" />
+                <!--                <RatingBar-->
+                <!--                    android:id="@+id/rating"-->
+                <!--                    style="?android:attr/ratingBarStyleSmall"-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_alignParentRight="true"-->
+                <!--                    android:layout_marginRight="@dimen/margin_md"-->
+                <!--                    tools:ignore="NotSibling,RtlCompat" />-->
+
 
             </RelativeLayout>
 
@@ -119,23 +126,23 @@
                 android:onClick="onPhoto"
                 tools:ignore="RtlCompat" />
 
-<!--        <de.hdodenhof.circleimageview.CircleImageView-->
-<!--            android:id="@+id/profile"-->
-<!--            android:layout_width="90dp"-->
-<!--            android:layout_height="90dp"-->
-<!--            android:layout_marginTop="32dp"-->
-<!--            app:civ_border_color="#a1a0a0"-->
-<!--            app:civ_border_overlay="true"-->
-<!--            app:civ_border_width="0dp"-->
-<!--            app:civ_circle_background_color="@color/grey" />-->
+            <!--        <de.hdodenhof.circleimageview.CircleImageView-->
+            <!--            android:id="@+id/profile"-->
+            <!--            android:layout_width="90dp"-->
+            <!--            android:layout_height="90dp"-->
+            <!--            android:layout_marginTop="32dp"-->
+            <!--            app:civ_border_color="#a1a0a0"-->
+            <!--            app:civ_border_overlay="true"-->
+            <!--            app:civ_border_width="0dp"-->
+            <!--            app:civ_circle_background_color="@color/grey" />-->
 
-<!--            <ImageView-->
-<!--                android:id="@+id/camera"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginTop="@dimen/margin_lg"-->
-<!--                android:onClick="onPhoto"-->
-<!--                android:src="@drawable/camera_gray" />-->
+            <!--            <ImageView-->
+            <!--                android:id="@+id/camera"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginTop="@dimen/margin_lg"-->
+            <!--                android:onClick="onPhoto"-->
+            <!--                android:src="@drawable/camera_gray" />-->
 
             <TextView
                 android:id="@+id/tvCategory"
@@ -151,7 +158,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginTop="@dimen/margin_lg"
-                android:background="@drawable/bg_login_btn_rounded"
+                android:dropDownWidth="wrap_content"
+                android:spinnerMode="dropdown" />
+
+
+            <TextView
+                android:id="@+id/tvtown"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Town"
+                android:layout_marginTop="@dimen/margin_lg"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/title_size" />
+
+            <Spinner
+                android:id="@+id/spinnertown"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="@dimen/margin_lg"
                 android:dropDownWidth="wrap_content"
                 android:spinnerMode="dropdown" />
 
@@ -170,7 +194,40 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginTop="@dimen/margin_lg"
-                android:background="@drawable/bg_login_btn_rounded"
+                android:dropDownWidth="wrap_content"
+                android:spinnerMode="dropdown" />
+
+            <TextView
+                android:id="@+id/tvRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rating"
+                android:layout_marginTop="@dimen/margin_lg"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/title_size" />
+
+            <Spinner
+                android:id="@+id/spinnerrating"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="@dimen/margin_lg"
+                android:dropDownWidth="wrap_content"
+                android:spinnerMode="dropdown" />
+
+            <TextView
+                android:id="@+id/tvGrade"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Grade"
+                android:layout_marginTop="@dimen/margin_lg"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/title_size" />
+
+            <Spinner
+                android:id="@+id/spinnergrade"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="@dimen/margin_lg"
                 android:dropDownWidth="wrap_content"
                 android:spinnerMode="dropdown" />
 
@@ -194,16 +251,16 @@
                 android:textColor="@color/grey_dark"
                 android:textSize="14sp" />
 
-    </LinearLayout>
+        </LinearLayout>
 
-<!--    <com.google.android.material.navigation.NavigationView-->
-<!--        android:id="@+id/navView"-->
-<!--        android:layout_width="250dp"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:layout_gravity="start"-->
-<!--        android:fitsSystemWindows="true"-->
-<!--        android:background="#E7DDDD"-->
-<!--        app:headerLayout="@layout/nav_header_home_navi"-->
-<!--        app:menu="@menu/bottom_nav_menu" />-->
-</RelativeLayout>
-</layout>
+        <!--    <com.google.android.material.navigation.NavigationView-->
+        <!--        android:id="@+id/navView"-->
+        <!--        android:layout_width="250dp"-->
+        <!--        android:layout_height="match_parent"-->
+        <!--        android:layout_gravity="start"-->
+        <!--        android:fitsSystemWindows="true"-->
+        <!--        android:background="#E7DDDD"-->
+        <!--        app:headerLayout="@layout/nav_header_home_navi"-->
+        <!--        app:menu="@menu/bottom_nav_menu" />-->
+    </RelativeLayout>
+</androidx.core.widget.NestedScrollView>

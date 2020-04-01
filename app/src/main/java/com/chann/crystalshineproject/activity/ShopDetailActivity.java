@@ -38,12 +38,14 @@ import retrofit2.Response;
 public class ShopDetailActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout mDrawerLayout;
-    private TextView categoryid, townshipid, tvname, tvtown, tvtype, tvaddress;
+    private TextView  tvtitle, tvname, tvtown, tvtype, tvaddress;
     private RatingBar ratingBar;
     private ImageView photo;
     private Button btneditshop;
     private String token = null;
     private int shopId = -1;
+    private int projectId = -1;
+    private int townshipId = -1;
 
     List<ShopDetail> shopDetail = new ArrayList<>();
 
@@ -58,9 +60,8 @@ public class ShopDetailActivity extends AppCompatActivity implements NavigationV
 
     private void initApi() {
 
+        tvtitle = findViewById(R.id.tvTitle);
         photo = findViewById(R.id.photo);
-        categoryid = findViewById(R.id.tvcategoryId);
-        townshipid = findViewById(R.id.tvtownshipId);
         tvname = findViewById(R.id.tvName);
         tvtown = findViewById(R.id.tvTown);
         tvtype = findViewById(R.id.tvType);
@@ -68,9 +69,16 @@ public class ShopDetailActivity extends AppCompatActivity implements NavigationV
         ratingBar = findViewById(R.id.rating);
         btneditshop = findViewById(R.id.btneditshop);
 
+
         Bundle bundle = getIntent().getExtras();
         shopId = bundle.getInt("shopId");
         Log.e("shopId",String.valueOf(shopId));
+
+        projectId = bundle.getInt("projectId");
+        Log.e("projectId",String.valueOf(projectId));
+
+        townshipId = bundle.getInt("townshipId");
+        Log.e("townshipId", String.valueOf(townshipId));
 
         token = bundle.getString("Token");
 
@@ -83,6 +91,7 @@ public class ShopDetailActivity extends AppCompatActivity implements NavigationV
                         Log.e("response.body","success");
 
                         Picasso.get().load(RetrofitService.BASE_URL + "/api/download_image/" + response.body().shopDetail.photo).into(photo);
+                        tvtitle.setText(response.body().shopDetail.name);
                         tvname.setText(response.body().shopDetail.name);
                         tvtown.setText(response.body().shopDetail.townshipName);
                         tvtype.setText(response.body().shopDetail.categoryName);
@@ -91,6 +100,7 @@ public class ShopDetailActivity extends AppCompatActivity implements NavigationV
 
                         Log.e("Id", String.valueOf(response.body().shopDetail.id));
                         Log.e("Name", response.body().shopDetail.name);
+                        Log.e("photo", response.body().shopDetail.photo);
                         Log.e("Township", response.body().shopDetail.townshipName);
                         Log.e("Category", response.body().shopDetail.categoryName);
                         Log.e("Address", response.body().shopDetail.address);
@@ -99,15 +109,22 @@ public class ShopDetailActivity extends AppCompatActivity implements NavigationV
                         btneditshop.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                Intent intent = new Intent(getApplicationContext() , EditShopListActivity.class);
+                                Intent intent = new Intent(getApplicationContext() , CheckInActivity.class);
                                 intent.putExtra("Token",token);
-                                intent.putExtra("categoryId", response.body().shopDetail.categoryId);
-                                intent.putExtra("townshipId", response.body().shopDetail.townshipId);
-                                intent.putExtra("photo", response.body().shopDetail.photo);
-                                intent.putExtra("rate", response.body().shopDetail.rate);
-                                intent.putExtra("grade", response.body().shopDetail.grade);
+                                intent.putExtra("shopId", shopId);
+                                intent.putExtra("projectId", projectId);
                                 intent.putExtra("name", response.body().shopDetail.name);
                                 intent.putExtra("address", response.body().shopDetail.address);
+                                intent.putExtra("townshipId", townshipId );
+                                intent.putExtra("photo", String.valueOf(photo));
+
+                                Log.e("token", token);
+                                Log.e("shopId", String.valueOf(shopId));
+                                Log.e("projectId", String.valueOf(projectId));
+                                Log.e("name", response.body().shopDetail.name);
+                                Log.e("address", response.body().shopDetail.address);
+                                Log.e("townshipId", String.valueOf(townshipId));
+                                Log.e("photo", String.valueOf(photo));
 
                                 SharedPreferences pref;// 0 - for private mode
                                 SharedPreferences.Editor editor;

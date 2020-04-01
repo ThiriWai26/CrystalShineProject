@@ -41,8 +41,10 @@ import com.chann.crystalshineproject.data.ShopCategoriesResponse;
 import com.chann.crystalshineproject.data.ShopCategory;
 import com.chann.crystalshineproject.data.ShopStoreResponse;
 import com.chann.crystalshineproject.data.Token;
-import com.chann.crystalshineproject.databinding.ActivityEditShopListBinding;
-import com.chann.crystalshineproject.databinding.ActivityShopListBinding;
+import com.chann.crystalshineproject.data.Towns;
+import com.chann.crystalshineproject.data.TownsResponse;
+import com.chann.crystalshineproject.data.Township;
+import com.chann.crystalshineproject.data.TownshipsResponse;
 import com.chann.crystalshineproject.service.RetrofitService;
 import com.google.android.material.navigation.NavigationView;
 
@@ -70,37 +72,34 @@ public class EditShopListActivity extends AppCompatActivity implements Navigatio
     private DrawerLayout mDrawerLayout;
     private EditText edtshopName, edtaddress;
     private TextView tvphoto;
-    private Spinner spinnerCategory, spinnerTownship;
+    private Spinner spinnerCategory, spinnerTownship, spinnerTown, spinnerRating, spinnerGrade;
     private RatingBar ratingBar;
-    private ActivityEditShopListBinding binding;
     private CompositeDisposable disposable;
 
     private String imagePath = "";
-    ArrayAdapter<String> adapter;
     private String token = null;
-    List<ShopCategory> shopCategory = new ArrayList<>();
-    List<String> townships = new ArrayList<>();
-    private SpinnerCategoryAdapter spinnerCategoryAdapter;
-
-    private int categoryId = -1;
-    private int townshipId = -1;
-    private String photo;
-
-    private int rate = -1;
-    private int grade  = -1;
-    private char name =' ';
+    private String name = null;
     private String address = null;
+    private String img;
+    private String category;
+    private String township;
+    private String rating;
+    private String grade;
 
+    private int categoryId;
+    private int townshipId = -1;
+    List<String> rate = new ArrayList<>();
+    List<String> grades = new ArrayList<>();
     List<String> categories = new ArrayList<>();
+    List<String> towns = new ArrayList<>();
+    List<String> townships = new ArrayList<>();
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_shop_list);
-
-//        disposable = new CompositeDisposable();
-//
-//        binding = DataBindingUtil.setContentView(this, R.layout.activity_edit_shop_list);
 
         initActivity();
     }
@@ -129,10 +128,14 @@ public class EditShopListActivity extends AppCompatActivity implements Navigatio
     private void init() {
 
         edtshopName = findViewById(R.id.edtshopName);
-        tvphoto = findViewById(R.id.edtphoto);
         edtaddress = findViewById(R.id.edtAddress);
+        tvphoto = findViewById(R.id.edtphoto);
         spinnerCategory = findViewById(R.id.spinnerCategory);
         spinnerTownship = findViewById(R.id.spinnerTownship);
+        spinnerTown  = findViewById(R.id.spinnertown);
+        spinnerRating = findViewById(R.id.spinnerrating);
+        spinnerGrade = findViewById(R.id.spinnergrade);
+
         ratingBar = findViewById(R.id.rating);
 
         Bundle bundle = getIntent().getExtras();
@@ -141,23 +144,25 @@ public class EditShopListActivity extends AppCompatActivity implements Navigatio
         townshipId = bundle.getInt("townshipId");
         Log.e("townshipId",String.valueOf(townshipId));
 
-        categoryId = bundle.getInt("categoryId");
-        Log.e("categoryId",String.valueOf(categoryId));
+//        categoryId = bundle.getInt("categoryId");
+//        Log.e("categoryId",String.valueOf(categoryId));
 
-        photo = bundle.getString("photo");
-        Log.e("photo", photo);
+        name = bundle.getString("name");
+        Log.e("name", name);
 
-        rate = bundle.getInt("rate");
-        Log.e("rate", String.valueOf(rate));
+        address = bundle.getString("address");
+        Log.e("address", address);
 
-        grade = bundle.getInt("grade");
-        Log.e("grade", String.valueOf(grade));
+        edtshopName.setText(getIntent().getStringExtra("name"));
+        edtaddress.setText(getIntent().getStringExtra("address"));
 
         loadSpinnerCategory();
         spinnerCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String s=   spinnerCategory.getItemAtPosition(spinnerCategory.getSelectedItemPosition()).toString();
+                categoryId = (int) spinnerCategory.getSelectedItemId()+1;
+                Log.e("catId", String.valueOf(categoryId));
                 Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
             }
             @Override
@@ -167,24 +172,101 @@ public class EditShopListActivity extends AppCompatActivity implements Navigatio
         });
 
         loadSpinnerTown();
-//        spinnerTown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-//                String s = spinnerTown.getItemAtPosition(spinnerTown.getSelectedItemPosition()).toString();
-//                Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> adapterView) {
-//
-//            }
-//        });
+        spinnerTown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String s = spinnerTown.getItemAtPosition(spinnerTown.getSelectedItemPosition()).toString();
+                String name = spinnerTown.getSelectedItem().toString();
+                int townId = (int) spinnerTown.getSelectedItemId()+1;
+                Log.e("name", name);
+                Log.e("id", String.valueOf(townId));
+                Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
 
-        }
+                Log.e("token", token);
+                Log.e("townId", String.valueOf(townId));
 
-    private void loadSpinnerTown() {
+                RetrofitService.getApiEnd().townships(token,townId).enqueue(new Callback<TownshipsResponse>() {
+                    @Override
+                    public void onResponse(Call<TownshipsResponse> call, Response<TownshipsResponse> response) {
+                        if(response.isSuccessful()){
+                            if (response.body().isSuccess) {
+                                Log.e("response.body","success");
+                                List<Township> township = response.body().township;
+
+                                for(int i=0; i<township.size(); i++){
+                                    townships.add(township.get(i).name);
+                                    Log.e("township_size", String.valueOf(response.body().township.size()));
+                                }
+                                ArrayAdapter<String> adapter = new ArrayAdapter<>(EditShopListActivity.this, R.layout.spinner_item, townships);
+                                adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+                                spinnerTownship.setAdapter(adapter);
+                            }
+                            else{
+                                Log.e("response.body","fail");
+                            }
+                        }
+                        else{
+                            Log.e("response","fail");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<TownshipsResponse> call, Throwable t) {
+                        Log.e("failure", t.toString());
+                    }
+                });
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        grades.add("A");
+        grades.add("B");
+        grades.add("C");
+        grades.add("D");
+        grades.add("E");
+        ArrayAdapter gradesAdapter = new ArrayAdapter<String>(this,R.layout.spinner_item, grades);
+        gradesAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        spinnerGrade.setAdapter(gradesAdapter);
+        spinnerGrade.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String s = spinnerGrade.getItemAtPosition(spinnerGrade.getSelectedItemPosition()).toString();
+                Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        rate.add("1");
+        rate.add("2");
+        rate.add("3");
+        rate.add("4");
+        rate.add("5");
+        ArrayAdapter ratesAdapter = new ArrayAdapter<String>(this,R.layout.spinner_item, rate);
+        ratesAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        spinnerRating.setAdapter(ratesAdapter);
+        spinnerRating.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String s = spinnerRating.getItemAtPosition(spinnerRating.getSelectedItemPosition()).toString();
+                Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
     }
-
     private void loadSpinnerCategory() {
         RetrofitService.getApiEnd().shopCategory(token).enqueue(new Callback<ShopCategoriesResponse>() {
             @Override
@@ -197,14 +279,14 @@ public class EditShopListActivity extends AppCompatActivity implements Navigatio
                         for(int i=0; i<shopCategory.size(); i++)
                         {
                             categories.add(shopCategory.get(i).name);
-                            Log.e("size", String.valueOf(response.body().shopCategory.size()));
+                            Log.e("category_size", String.valueOf(response.body().shopCategory.size()));
                         }
                         ArrayAdapter<String> adapter = new ArrayAdapter<String>(EditShopListActivity.this, R.layout.spinner_item, categories);
                         adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
                         spinnerCategory.setAdapter(adapter);
                     }
                     else{
-                        Log.e("response.body","fail");
+                        Log.e("response.body.category","fail");
                     }
                 }
                 else{
@@ -217,7 +299,37 @@ public class EditShopListActivity extends AppCompatActivity implements Navigatio
                 Log.e("failure", t.toString());
             }
         });
+
     }
+
+    private void loadSpinnerTown() {
+        RetrofitService.getApiEnd().towns(token).enqueue(new Callback<TownsResponse>() {
+            @Override
+            public void onResponse(Call<TownsResponse> call, Response<TownsResponse> response) {
+                if (response.isSuccessful()) {
+                    if (response.body().isSuccess) {
+                        Log.e("response.body", "success");
+                        List<Towns> town = response.body().towns;
+
+                        for (int i = 0; i < town.size(); i++) {
+                            towns.add(town.get(i).name);
+                            Log.e("town_size", String.valueOf(response.body().towns.size()));
+                        }
+                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(EditShopListActivity.this, R.layout.spinner_item, towns);
+                        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+                        spinnerTown.setAdapter(adapter);
+
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TownsResponse> call, Throwable t) {
+
+            }
+        });
+    }
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -307,9 +419,10 @@ public class EditShopListActivity extends AppCompatActivity implements Navigatio
 
     }
 
-    public void onClickSave(View view) {
-
+    public void onClickShopSave(View view) {
         Log.e("onclicksave", "ok");
+        RequestBody token = RequestBody.create( MediaType.parse("multipart/form-data"), Token.MyToken.getToken());
+        Log.e("Token", String.valueOf(token));
         MultipartBody.Part photo = null;
         File file = new File(imagePath);
         Log.e("originalfilesize",String.valueOf(file.length()/1024));
@@ -322,34 +435,62 @@ public class EditShopListActivity extends AppCompatActivity implements Navigatio
             e.printStackTrace();
         }
 
-        Log.e("fileimagePath",imagePath);
-        Log.e("shop name", String.valueOf(edtshopName));
-        Log.e("address", String.valueOf(edtaddress));
-        Log.e("token", String.valueOf(token));
-
-        RequestBody imageBody = RequestBody.create( MediaType.parse("multipart/form-data"), file);
-        photo = MultipartBody.Part.createFormData("image",file.getName(),imageBody);
-
         Log.e("file name",file.getName());
-
+        Log.e("fileimagePath",imagePath);
+        RequestBody imageBody = RequestBody.create( MediaType.parse("multipart/form-data"), file);
+        photo = MultipartBody.Part.createFormData("photo",file.getName(),imageBody);
+        Log.e("file name",file.getName());
         Log.e("api","start");
+
+        name = edtshopName.getText().toString();
+        address = edtaddress.getText().toString();
+        img = tvphoto.getText().toString();
+        category =spinnerCategory.getSelectedItem().toString();
+        township = spinnerTownship.getSelectedItem().toString();
+        rating = spinnerRating.getSelectedItem().toString();
+        grade = spinnerGrade.getSelectedItem().toString();
+
+        Log.e("name", name);
+        Log.e("address", address);
+        Log.e("image", file.getName());
+        Log.e("category", category);
+        Log.e("township", township);
+        Log.e("rating", String.valueOf(rating));
+        Log.e("grade", grade);
+        Log.e("token", Token.MyToken.getToken());
+        Log.e("categoryId", String.valueOf(categoryId));
+        Log.e("townshipId", String.valueOf(townshipId));
+        Log.e("photo", file.getName());
 
         RetrofitService.getApiEnd().shopStoreUpdate(token,categoryId,townshipId,photo,rate,grade,name,address).enqueue(new Callback<ShopStoreResponse>() {
             @Override
             public void onResponse(Call<ShopStoreResponse> call, Response<ShopStoreResponse> response) {
+                Log.e("api","ok");
                 if(response.isSuccessful()){
                     if(response.body().isSuccess){
                         Log.e("response.body","success");
+                        Toast.makeText(EditShopListActivity.this, "Change Success", Toast.LENGTH_LONG).show();
+
                     }
+                    else {
+                        Log.e("upload","fail");
+                        Toast.makeText(getApplicationContext(),"Update fail",Toast.LENGTH_LONG).show();
+                    }
+                }else{
+                    Log.e("failure","Update Success");
+                    Toast.makeText(EditShopListActivity.this, "Change Success", Toast.LENGTH_LONG).show();
                 }
+
             }
 
             @Override
             public void onFailure(Call<ShopStoreResponse> call, Throwable t) {
-
+                Log.e("failure", t.toString());
             }
         });
 
 
     }
+
+
 }

@@ -51,6 +51,7 @@ public class ShopListActivity extends AppCompatActivity implements NavigationVie
     private FloatingActionButton floatingActionButton;
     private String token = null;
     private int townshipId = -1;
+    private int projectId = -1;
     List<ShopList> shopListList = new ArrayList<>();
 
     @Override
@@ -70,6 +71,9 @@ public class ShopListActivity extends AppCompatActivity implements NavigationVie
         Bundle bundle = getIntent().getExtras();
         townshipId = bundle.getInt("townshipId");
         Log.e("townshipId",String.valueOf(townshipId));
+
+        projectId = bundle.getInt("projectId");
+        Log.e("projectId",String.valueOf(projectId));
 
         Bundle b = getIntent().getExtras();
         token = b.getString("Token");
@@ -97,6 +101,7 @@ public class ShopListActivity extends AppCompatActivity implements NavigationVie
                             if(response.isSuccessful()){
                                 if(response.body().isSuccess){
                                     Log.e("search","success");
+
                                 }
                             }
                         }
@@ -209,6 +214,8 @@ public class ShopListActivity extends AppCompatActivity implements NavigationVie
         Intent intent = new Intent(getApplicationContext(), ShopDetailActivity.class);
         intent.putExtra("Token",token);
         intent.putExtra("shopId", id);
+        intent.putExtra("projectId", projectId);
+        intent.putExtra("townshipId", townshipId);
         startActivity(intent);
     }
 
