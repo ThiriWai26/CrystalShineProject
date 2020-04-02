@@ -53,7 +53,7 @@ public interface ApiEnd {
 
     @FormUrlEncoded
     @POST("api/shop_search")
-    Call<ShopSearchResponse> shopSearch(@Field("token") String token, @Field("name") String name);
+    Call<ShopSearchResponse> shopSearch(@Field("token") String token, @Field("name") char name);
 
     @FormUrlEncoded
     @POST("api/towns")

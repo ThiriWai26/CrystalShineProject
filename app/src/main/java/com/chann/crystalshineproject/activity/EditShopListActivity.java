@@ -477,8 +477,7 @@ public class EditShopListActivity extends AppCompatActivity implements Navigatio
                         Toast.makeText(getApplicationContext(),"Update fail",Toast.LENGTH_LONG).show();
                     }
                 }else{
-                    Log.e("failure","Update Success");
-                    Toast.makeText(EditShopListActivity.this, "Change Success", Toast.LENGTH_LONG).show();
+                    Log.e("failure","fail");
                 }
 
             }

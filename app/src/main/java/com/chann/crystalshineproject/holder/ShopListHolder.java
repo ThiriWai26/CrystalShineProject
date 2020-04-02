@@ -1,5 +1,7 @@
 package com.chann.crystalshineproject.holder;
 
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +48,9 @@ public class ShopListHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View view) {
                 listener.onShopClick(shopList.id);
+                Intent intent = new Intent();
+                intent.putExtra("name", String.valueOf(tvName));
+                Log.e("Name", String.valueOf(tvName));
             }
         });
 
