@@ -10,4 +10,7 @@ public class ProjectNameListResponse {
     @SerializedName("projects")
     public ProjectNameList projectNameList;
 
+    @SerializedName("error_message")
+    public String errorMessage;
+
 }

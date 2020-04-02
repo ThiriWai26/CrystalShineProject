@@ -11,4 +11,7 @@ public class ShopListResponse {
 
     @SerializedName("shops")
     public List<ShopList> shopList;
+
+    @SerializedName("error_message")
+    public String errorMessage;
 }

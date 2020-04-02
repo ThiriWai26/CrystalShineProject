@@ -50,6 +50,7 @@ public class ShopListActivity extends AppCompatActivity implements NavigationVie
 
     private DrawerLayout mDrawerLayout;
     private ShopListAdapter adapter;
+    private ShopListAdapter searchAdapter;
     private LinearLayoutManager layoutManager;
     private RecyclerView recyclerView;
     private androidx.appcompat.widget.SearchView searchView;
@@ -74,6 +75,7 @@ public class ShopListActivity extends AppCompatActivity implements NavigationVie
         layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
+        searchAdapter = new ShopListAdapter(this);
 
         Bundle bundle = getIntent().getExtras();
         townshipId = bundle.getInt("townshipId");
@@ -88,9 +90,6 @@ public class ShopListActivity extends AppCompatActivity implements NavigationVie
         initActivity();
         initApi();
 
-//        serchViewFilter();
-//        searchViewModify();
-
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -104,110 +103,43 @@ public class ShopListActivity extends AppCompatActivity implements NavigationVie
             }
         });
 
-        if (bundle != null) {
-            char name = bundle.getChar("name");
-            getSearchItem(token,name);
-
-        }
-    }
-
-    private void getSearchItem(String token, char name) {
-        RetrofitService.getApiEnd().shopSearch(token,name).enqueue(new Callback<ShopSearchResponse>() {
-            @Override
-            public void onResponse(Call<ShopSearchResponse> call, Response<ShopSearchResponse> response) {
-                if(response.isSuccessful()){
-                    if(response.body().isSuccess){
-                        Log.e("response.body","success");
-                        adapter.addItem(response.body().shopList);
-                    }else {
-                        Log.e("response.body","fail");
-                    }
-                }else{
-                    Log.e("response","fail");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ShopSearchResponse> call, Throwable t) {
-                Log.e("failure", t.toString());
-            }
-        });
-    }
-
-
-    private void serchViewFilter() {
-
-//        RetrofitService.getApiEnd().shopSearch(token,name).enqueue(new Callback<ShopSearchResponse>() {
-//            @Override
-//            public void onResponse(Call<ShopSearchResponse> call, Response<ShopSearchResponse> response) {
-//                if(response.isSuccessful()){
-//                    if(response.body().isSuccess){
-//
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<ShopSearchResponse> call, Throwable t) {
-//
-//            }
-//        });
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                query = query.toLowerCase(Locale.getDefault());
-                if(query.length() != 0){
-                    shopLists.clear();
-                    for (ShopList shopList : shopListList) {
-                        if (shopList.name.toLowerCase(Locale.getDefault()).contains(query)) {
-
-                            shopLists.add(shopList);
-                        }
-                    }
-                    adapter.addItem(shopLists);
-                } else {
-                    adapter.addItem(shopListList);
-                }
-                Toast.makeText(getApplicationContext(), query, Toast.LENGTH_LONG).show();
-
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                newText = newText.toLowerCase(Locale.getDefault());
-                if(newText.length() != 0){
-                    shopLists.clear();
-                    for (ShopList shopList : shopListList) {
-                        if (shopList.name.toLowerCase(Locale.getDefault()).contains(newText)) {
-
-                            shopLists.add(shopList);
+                if(newText.isEmpty()){
+                    recyclerView.setAdapter(adapter);
+                }else{
+                    Log.e("token", token);
+                    Log.e("newtext", newText);
+                    RetrofitService.getApiEnd().shopSearch(token,newText).enqueue(new Callback<ShopSearchResponse>() {
+                        @Override
+                        public void onResponse(Call<ShopSearchResponse> call, Response<ShopSearchResponse> response) {
+                            if(response.isSuccessful()){
+                                if(response.body().isSuccess){
+                                    recyclerView.setAdapter(searchAdapter);
+                                    searchAdapter.addItem(response.body().shopList);
+                                    searchAdapter.notifyDataSetChanged();
+                                }
+                            }
                         }
-                    }
-                    adapter.addItem(shopLists);
-                } else {
-                    adapter.addItem(shopListList);
-                }
 
-                Toast.makeText(getApplicationContext(), newText, Toast.LENGTH_LONG).show();
+                        @Override
+                        public void onFailure(Call<ShopSearchResponse> call, Throwable t) {
+
+                        }
+                    });
+                }
                 return false;
             }
         });
-//
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
-    private void searchViewModify(){
-
-        androidx.appcompat.widget.SearchView.SearchAutoComplete searchAutoComplete = searchView.findViewById(R.id.search_src_text);
-        searchAutoComplete.setTextColor(Color.BLACK);
-        searchAutoComplete.setHint("Search Shop");
-        searchAutoComplete.setHintTextColor(Color.BLACK);
-        searchAutoComplete.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
-
-    }
-
-
     private void initApi() {
         Log.e("api","success");
          RetrofitService.getApiEnd().shopList(token,townshipId).enqueue(new Callback<ShopListResponse>() {
@@ -217,12 +149,14 @@ public class ShopListActivity extends AppCompatActivity implements NavigationVie
                      if(response.body().isSuccess){
                          Log.e("response.body","success");
                          adapter.addItem(response.body().shopList);
-                         Log.e("size", String.valueOf(shopListList.size()));
                          adapter.notifyDataSetChanged();
                      }
                      else{
                          Log.e("response.body", "fail");
                      }
+                 }
+                 else{
+                     Toast.makeText(getApplicationContext(), response.body().errorMessage, Toast.LENGTH_LONG);
                  }
              }
 
@@ -233,7 +167,6 @@ public class ShopListActivity extends AppCompatActivity implements NavigationVie
          });
 
     }
-
 
     private void initActivity() {
 
@@ -283,8 +216,6 @@ public class ShopListActivity extends AppCompatActivity implements NavigationVie
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-
 
     @Override
     public void onShopClick(int id) {

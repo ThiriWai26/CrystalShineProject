@@ -100,7 +100,6 @@ public class ShopDetailActivity extends AppCompatActivity implements NavigationV
 
                         Log.e("Id", String.valueOf(response.body().shopDetail.id));
                         Log.e("Name", response.body().shopDetail.name);
-                        Log.e("photo", response.body().shopDetail.photo);
                         Log.e("Township", response.body().shopDetail.townshipName);
                         Log.e("Category", response.body().shopDetail.categoryName);
                         Log.e("Address", response.body().shopDetail.address);

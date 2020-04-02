@@ -43,6 +43,7 @@ public class ShopListAdapter extends RecyclerView.Adapter<ShopListHolder> {
 
     public void addItem(List<ShopList> shopList) {
 
+//        this.shopLists =shopList;
         if(shopLists.isEmpty()){
             this.shopLists=shopList;
         }else{

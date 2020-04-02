@@ -41,6 +41,7 @@ import com.chann.crystalshineproject.service.RetrofitService;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import id.zelory.compressor.Compressor;
@@ -76,6 +77,7 @@ public class AddShopListActivity extends AppCompatActivity {
     List<String> categories = new ArrayList<>();
     List<String> towns = new ArrayList<>();
     List<String> townships = new ArrayList<>();
+    List<ShopCategory> shopCategories = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,12 +120,26 @@ public class AddShopListActivity extends AppCompatActivity {
         token = bundle.getString("token");
 
         loadSpinnerCategory();
+//        SpinnerCategoryAdapter spinnerCategoryAdapter = new SpinnerCategoryAdapter(this,R.layout.spinner_item, shopCategories);
+//        spinnerCategory.setAdapter(spinnerCategoryAdapter);
         spinnerCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                String s=   spinnerCategory.getItemAtPosition(spinnerCategory.getSelectedItemPosition()).toString();
-                categoryId = (int) spinnerCategory.getSelectedItemId()+1;
-                Log.e("CategoryId", String.valueOf(categoryId));
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                String s =  spinnerCategory.getItemAtPosition(spinnerCategory.getSelectedItemPosition()).toString();
+                if (spinnerCategory.getId() == R.id.spinnerCategory) {
+                    ShopCategory shopCategory = new ShopCategory();
+                    String name = shopCategory.name;
+                    int id = shopCategory.id;
+
+                }
+
+//                ShopCategory shopCategory = (ShopCategory) adapterView.getSelectedItem();
+//                String name = shopCategory.name;
+//                int id = shopCategory.id;
+//                Log.e("cat","id"+ id + "name" + name);
+//
+//                categoryId = id;
+
                 Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
             }
             @Override
@@ -131,6 +147,7 @@ public class AddShopListActivity extends AppCompatActivity {
                 // DO Nothing here
             }
         });
+
 
         loadSpinnerTown();
         spinnerTown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -239,9 +256,10 @@ public class AddShopListActivity extends AppCompatActivity {
 
                         for(int i=0; i<shopCategory.size(); i++)
                         {
-                            categories.add(shopCategory.get(i).name);
+                            String name = String.valueOf(categories.add(shopCategory.get(i).name));
                             Log.e("category_size", String.valueOf(response.body().shopCategory.size()));
                         }
+
                         ArrayAdapter<String> adapter = new ArrayAdapter<String>(AddShopListActivity.this, R.layout.spinner_item, categories);
                         adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
                         spinnerCategory.setAdapter(adapter);
@@ -405,7 +423,7 @@ public class AddShopListActivity extends AppCompatActivity {
                     }
                     else {
                         Log.e("upload","fail");
-                        Toast.makeText(getApplicationContext(),"Update fail",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), (CharSequence) response.body().errorMessage, Toast.LENGTH_LONG).show();
                     }
                 }else{
                     Log.e("failure","fail");

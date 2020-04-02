@@ -85,6 +85,8 @@ public class ProjectNameListActivity extends AppCompatActivity implements Naviga
                     else {
                         Log.e("response.body","fail");
                     }
+                }else {
+                    Toast.makeText(getApplicationContext(), response.body().errorMessage, Toast.LENGTH_LONG).show();
                 }
             }
 
