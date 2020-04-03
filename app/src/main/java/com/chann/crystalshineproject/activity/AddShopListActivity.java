@@ -59,6 +59,7 @@ public class AddShopListActivity extends AppCompatActivity {
     private TextView tvphoto;
     private Spinner spinnerCategory, spinnerTownship, spinnerTown, spinnerRating, spinnerGrade;
     private DrawerLayout mDrawerLayout;
+    private SpinnerCategoryAdapter adapter;
 
     private String imagePath = "";
     private String token = null;
@@ -77,7 +78,8 @@ public class AddShopListActivity extends AppCompatActivity {
     List<String> categories = new ArrayList<>();
     List<String> towns = new ArrayList<>();
     List<String> townships = new ArrayList<>();
-    List<ShopCategory> shopCategories = new ArrayList<>();
+    private List<ShopCategory> shopCategoryList = new ArrayList<>();
+    private List<Towns> townsList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,25 +122,13 @@ public class AddShopListActivity extends AppCompatActivity {
         token = bundle.getString("token");
 
         loadSpinnerCategory();
-//        SpinnerCategoryAdapter spinnerCategoryAdapter = new SpinnerCategoryAdapter(this,R.layout.spinner_item, shopCategories);
-//        spinnerCategory.setAdapter(spinnerCategoryAdapter);
         spinnerCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 String s =  spinnerCategory.getItemAtPosition(spinnerCategory.getSelectedItemPosition()).toString();
-                if (spinnerCategory.getId() == R.id.spinnerCategory) {
-                    ShopCategory shopCategory = new ShopCategory();
-                    String name = shopCategory.name;
-                    int id = shopCategory.id;
-
-                }
-
-//                ShopCategory shopCategory = (ShopCategory) adapterView.getSelectedItem();
-//                String name = shopCategory.name;
-//                int id = shopCategory.id;
-//                Log.e("cat","id"+ id + "name" + name);
-//
-//                categoryId = id;
+                categoryId = shopCategoryList.get(position).id;
+                Log.e("categoryId", String.valueOf(categoryId));
+                Log.e("name", s);
 
                 Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
             }
@@ -155,7 +145,7 @@ public class AddShopListActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String s = spinnerTown.getItemAtPosition(spinnerTown.getSelectedItemPosition()).toString();
                 String name = spinnerTown.getSelectedItem().toString();
-                int townId = (int) spinnerTown.getSelectedItemId();
+                int townId = (int) spinnerTown.getSelectedItemId()+1;
                 Log.e("name", spinnerTown.getSelectedItem().toString());
                 Log.e("id", String.valueOf(townId));
                 Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
@@ -252,15 +242,18 @@ public class AddShopListActivity extends AppCompatActivity {
                 if(response.isSuccessful()){
                     if(response.body().isSuccess){
                         Log.e("response.body","success");
+                        shopCategoryList = response.body().shopCategory;
                         List<ShopCategory> shopCategory = response.body().shopCategory;
-
+                        List<String> shopCategories = new ArrayList<>();
                         for(int i=0; i<shopCategory.size(); i++)
                         {
-                            String name = String.valueOf(categories.add(shopCategory.get(i).name));
+                            String name = shopCategory.get(i).name;
+                            shopCategories.add(name);
+                            Log.e("name", name);
                             Log.e("category_size", String.valueOf(response.body().shopCategory.size()));
                         }
 
-                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(AddShopListActivity.this, R.layout.spinner_item, categories);
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, shopCategories);
                         adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
                         spinnerCategory.setAdapter(adapter);
                     }
@@ -288,6 +281,7 @@ public class AddShopListActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     if (response.body().isSuccess) {
                         Log.e("response.body", "success");
+                        townsList = response.body().towns;
                         List<Towns> town = response.body().towns;
 
                         for (int i = 0; i < town.size(); i++) {

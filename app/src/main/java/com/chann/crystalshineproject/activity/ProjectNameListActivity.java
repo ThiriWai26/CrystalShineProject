@@ -1,6 +1,7 @@
 package com.chann.crystalshineproject.activity;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 
 import com.chann.crystalshineproject.R;
 import com.chann.crystalshineproject.adapter.ProjectNameListAdapter;
+import com.chann.crystalshineproject.data.Logout;
 import com.chann.crystalshineproject.data.ProjectNameList;
 import com.chann.crystalshineproject.data.ProjectNameListResponse;
 import com.chann.crystalshineproject.data.Projects;
@@ -58,6 +60,7 @@ public class ProjectNameListActivity extends AppCompatActivity implements Naviga
 
     private void init() {
 
+        mDrawerLayout = findViewById(R.id.drawer_layout);
         recyclerView = findViewById(R.id.projectNameList_recyclerView);
         adapter = new ProjectNameListAdapter(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -99,54 +102,31 @@ public class ProjectNameListActivity extends AppCompatActivity implements Naviga
 
     private void initActivity() {
 
-            Toolbar toolbar =  findViewById(R.id.toolbar);
-            setSupportActionBar(toolbar);
-            mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-//                this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-//        mDrawerLayout.addDrawerListener(toggle);
-//        toggle.syncState();
-//
-//        NavigationView navigationView = (NavigationView) findViewById(R.id.navView);
-//        navigationView.setNavigationItemSelectedListener(this);
+        Toolbar toolbar =  findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
 
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setHomeButtonEnabled(true);
-            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_dehaze_black_24dp);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.navView);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_dehaze_black_24dp);
 
         }
-
 
     @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        int id = menuItem.getItemId();
-
-        if (id == R.id.nav_camera) {
-            Toast.makeText(this, "Camera", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.nav_gallery) {
-            Toast.makeText(this, "Gallery", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.nav_slideshow) {
-            Toast.makeText(this, "Slideshow", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.nav_manage) {
-            Toast.makeText(this, "Tools", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.nav_share) {
-            Toast.makeText(this, "Setting", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.nav_logout) {
-            Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show();
-
-            SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);// 0 - for private mode
-            SharedPreferences.Editor editor = pref.edit();
-            editor.clear();
-            editor.commit();
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-            finish();
-
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
         }
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-
     }
 
     @Override
@@ -158,4 +138,61 @@ public class ProjectNameListActivity extends AppCompatActivity implements Naviga
         startActivity(intent);
     }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        Log.e("nav","select");
+        int id = menuItem.getItemId();
+
+        Intent intent;
+        switch (id){
+            case 0:
+                intent = new Intent(getApplicationContext(), ProjectNameListActivity.class);
+                startActivity(intent);
+                break;
+            case 1:
+                intent = new Intent(getApplicationContext(), TownshipListActivity.class);
+                startActivity(intent);
+                break;
+        }
+
+//        if (id == R.id.projectList) {
+//            Toast.makeText(this, "Projects", Toast.LENGTH_SHORT).show();
+//            startActivity(new Intent(getApplicationContext(), ProjectNameListActivity.class));
+//        } else if (id == R.id.township) {
+//            Toast.makeText(this, "Township", Toast.LENGTH_SHORT).show();
+//            startActivity(new Intent(getApplicationContext(), TownshipListActivity.class));
+//        } else if (id == R.id.shopList) {
+//            Toast.makeText(this, "Shop List", Toast.LENGTH_SHORT).show();
+//            startActivity(new Intent(getApplicationContext(), ShopListActivity.class));
+//        } else if (id == R.id.nav_logout) {
+//            RetrofitService.getApiEnd().userLogout(token).enqueue(new Callback<Logout>() {
+//                @Override
+//                public void onResponse(Call<Logout> call, Response<Logout> response) {
+//                    if(response.isSuccessful()){
+//                        if (response.body().isSuccess) {
+//                            Toast.makeText(getApplicationContext(), response.body().message, Toast.LENGTH_LONG).show();
+//                        } else {
+//                            Log.e("response.body","fail");
+//                        }
+//                    }
+//                }
+//
+//                @Override
+//                public void onFailure(Call<Logout> call, Throwable t) {
+//                    Log.e("failure","fail");
+//                }
+//            });
+//            Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show();
+//            SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);// 0 - for private mode
+//            SharedPreferences.Editor editor = pref.edit();
+//            editor.clear();
+//            editor.commit();
+//            Intent intent = new Intent(this, LoginActivity.class);
+//            startActivity(intent);
+//            finish();
+//        }
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
 }

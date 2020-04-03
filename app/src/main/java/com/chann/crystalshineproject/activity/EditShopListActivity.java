@@ -67,7 +67,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class EditShopListActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class EditShopListActivity extends AppCompatActivity {
 
     private DrawerLayout mDrawerLayout;
     private EditText edtshopName, edtaddress;
@@ -332,38 +332,6 @@ public class EditShopListActivity extends AppCompatActivity implements Navigatio
 
 
     @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        int id = menuItem.getItemId();
-
-        if (id == R.id.nav_camera) {
-            Toast.makeText(this, "Camera", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.nav_gallery) {
-            Toast.makeText(this, "Gallery", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.nav_slideshow) {
-            Toast.makeText(this, "Slideshow", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.nav_manage) {
-            Toast.makeText(this, "Tools", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.nav_share) {
-            Toast.makeText(this, "Share", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.nav_logout) {
-            Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show();
-
-            SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);// 0 - for private mode
-            SharedPreferences.Editor editor = pref.edit();
-            editor.clear();
-            editor.commit();
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-            finish();
-
-        }
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
-
-    @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -478,6 +446,7 @@ public class EditShopListActivity extends AppCompatActivity implements Navigatio
                     }
                 }else{
                     Log.e("failure","fail");
+                    Toast.makeText(getApplicationContext(),"Update Success",Toast.LENGTH_LONG).show();
                 }
 
             }
