@@ -86,14 +86,16 @@ public class EditShopListActivity extends AppCompatActivity {
     private String rating;
     private String grade;
 
-    private int categoryId;
+    private int categoryId = -1;
     private int townshipId = -1;
     List<String> rate = new ArrayList<>();
     List<String> grades = new ArrayList<>();
     List<String> categories = new ArrayList<>();
     List<String> towns = new ArrayList<>();
     List<String> townships = new ArrayList<>();
-
+    private List<ShopCategory> shopCategoryList = new ArrayList<>();
+    private List<Towns> townsList = new ArrayList<>();
+    private List<Township> townshipList = new ArrayList<>();
 
 
     @Override
@@ -144,9 +146,6 @@ public class EditShopListActivity extends AppCompatActivity {
         townshipId = bundle.getInt("townshipId");
         Log.e("townshipId",String.valueOf(townshipId));
 
-//        categoryId = bundle.getInt("categoryId");
-//        Log.e("categoryId",String.valueOf(categoryId));
-
         name = bundle.getString("name");
         Log.e("name", name);
 
@@ -159,10 +158,12 @@ public class EditShopListActivity extends AppCompatActivity {
         loadSpinnerCategory();
         spinnerCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                String s=   spinnerCategory.getItemAtPosition(spinnerCategory.getSelectedItemPosition()).toString();
-                categoryId = (int) spinnerCategory.getSelectedItemId()+1;
-                Log.e("catId", String.valueOf(categoryId));
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                String s =  spinnerCategory.getItemAtPosition(spinnerCategory.getSelectedItemPosition()).toString();
+                categoryId = shopCategoryList.get(position).id;
+                Log.e("categoryId", String.valueOf(categoryId));
+                Log.e("name", s);
+
                 Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
             }
             @Override
@@ -176,9 +177,8 @@ public class EditShopListActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String s = spinnerTown.getItemAtPosition(spinnerTown.getSelectedItemPosition()).toString();
-                String name = spinnerTown.getSelectedItem().toString();
-                int townId = (int) spinnerTown.getSelectedItemId()+1;
-                Log.e("name", name);
+                int townId = townsList.get(i).id;
+                Log.e("name", spinnerTown.getSelectedItem().toString());
                 Log.e("id", String.valueOf(townId));
                 Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
 
@@ -192,12 +192,14 @@ public class EditShopListActivity extends AppCompatActivity {
                             if (response.body().isSuccess) {
                                 Log.e("response.body","success");
                                 List<Township> township = response.body().township;
+                                List<String> townshipLists = new ArrayList<>();
 
                                 for(int i=0; i<township.size(); i++){
-                                    townships.add(township.get(i).name);
+                                    String name = township.get(i).name;
+                                    townshipLists.add(name);
                                     Log.e("township_size", String.valueOf(response.body().township.size()));
                                 }
-                                ArrayAdapter<String> adapter = new ArrayAdapter<>(EditShopListActivity.this, R.layout.spinner_item, townships);
+                                ArrayAdapter<String> adapter = new ArrayAdapter<>(EditShopListActivity.this, R.layout.spinner_item, townshipLists);
                                 adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
                                 spinnerTownship.setAdapter(adapter);
                             }
@@ -267,6 +269,8 @@ public class EditShopListActivity extends AppCompatActivity {
 
 
     }
+
+
     private void loadSpinnerCategory() {
         RetrofitService.getApiEnd().shopCategory(token).enqueue(new Callback<ShopCategoriesResponse>() {
             @Override
@@ -274,19 +278,23 @@ public class EditShopListActivity extends AppCompatActivity {
                 if(response.isSuccessful()){
                     if(response.body().isSuccess){
                         Log.e("response.body","success");
+                        shopCategoryList = response.body().shopCategory;
                         List<ShopCategory> shopCategory = response.body().shopCategory;
-
+                        List<String> shopCategories = new ArrayList<>();
                         for(int i=0; i<shopCategory.size(); i++)
                         {
-                            categories.add(shopCategory.get(i).name);
+                            String name = shopCategory.get(i).name;
+                            shopCategories.add(name);
+                            Log.e("name", name);
                             Log.e("category_size", String.valueOf(response.body().shopCategory.size()));
                         }
-                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(EditShopListActivity.this, R.layout.spinner_item, categories);
+
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, shopCategories);
                         adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
                         spinnerCategory.setAdapter(adapter);
                     }
                     else{
-                        Log.e("response.body.category","fail");
+                        Log.e("response.body","fail");
                     }
                 }
                 else{
@@ -309,13 +317,16 @@ public class EditShopListActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     if (response.body().isSuccess) {
                         Log.e("response.body", "success");
+                        townsList = response.body().towns;
                         List<Towns> town = response.body().towns;
+                        List<String> townlist = new ArrayList<>();
 
                         for (int i = 0; i < town.size(); i++) {
-                            towns.add(town.get(i).name);
+                            String name = town.get(i).name;
+                            townlist.add(name);
                             Log.e("town_size", String.valueOf(response.body().towns.size()));
                         }
-                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(EditShopListActivity.this, R.layout.spinner_item, towns);
+                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(EditShopListActivity.this, R.layout.spinner_item, townlist);
                         adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
                         spinnerTown.setAdapter(adapter);
 
@@ -438,15 +449,13 @@ public class EditShopListActivity extends AppCompatActivity {
                     if(response.body().isSuccess){
                         Log.e("response.body","success");
                         Toast.makeText(EditShopListActivity.this, "Change Success", Toast.LENGTH_LONG).show();
-
                     }
                     else {
-                        Log.e("upload","fail");
+                        Log.e("response.body","fail");
                         Toast.makeText(getApplicationContext(),"Update fail",Toast.LENGTH_LONG).show();
                     }
                 }else{
                     Log.e("failure","fail");
-                    Toast.makeText(getApplicationContext(),"Update Success",Toast.LENGTH_LONG).show();
                 }
 
             }
