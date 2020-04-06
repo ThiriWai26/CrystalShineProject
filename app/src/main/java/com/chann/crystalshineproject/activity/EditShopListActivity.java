@@ -441,6 +441,14 @@ public class EditShopListActivity extends AppCompatActivity {
         Log.e("townshipId", String.valueOf(townshipId));
         Log.e("photo", file.getName());
 
+        if (edtshopName.getText().toString().isEmpty())
+            edtshopName.setError("Enter Shop Name");
+        else name = edtshopName.getText().toString();
+
+        if (edtaddress.getText().toString().isEmpty())
+            edtaddress.setError("Enter Address");
+        else address = edtaddress.getText().toString();
+
         RetrofitService.getApiEnd().shopStoreUpdate(token,categoryId,townshipId,photo,rate,grade,name,address).enqueue(new Callback<ShopStoreResponse>() {
             @Override
             public void onResponse(Call<ShopStoreResponse> call, Response<ShopStoreResponse> response) {

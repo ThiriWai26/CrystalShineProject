@@ -13,14 +13,18 @@ import com.chann.crystalshineproject.data.TownsResponse;
 import com.chann.crystalshineproject.data.TownshipResponse;
 import com.chann.crystalshineproject.data.TownshipsResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Header;
+import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
@@ -67,9 +71,36 @@ public interface ApiEnd {
     @POST("api/shop_categories")
     Call<ShopCategoriesResponse> shopCategory(@Field("token") String token);
 
+
+
     @Multipart
-    @POST("api/shop_store")
-    Call<ShopStoreResponse> shopStore(@Part("token") RequestBody token, @Part("category_id") int categoryId, @Part("township_id") int townshipId, @Part MultipartBody.Part photo, @Part("rate") List<String> rate, @Part("grade") String grade);
+    @Headers("Accept: application/json")
+    @POST("/api/shop_store")
+    Call<ShopStoreResponse> shopStore(@Part("token") RequestBody token,
+                                      @Part("category_id") String categoryId,
+                                      @Part("township_id") String  townshipId,
+                                      @Part MultipartBody.Part photo,
+                                      @Part("rate") String rate,
+                                      @Part("name") String name,
+                                      @Part("grade") String grade,
+                                      @Part("address") String address);
+
+    @Multipart
+    @Headers("Accept: application/json")
+    @POST("/api/shop_store")
+    Call<ShopStoreResponse> shopStore33(@Part("token") RequestBody token,
+                                      @Part("category_id") RequestBody categoryId,
+                                      @Part("township_id") RequestBody  townshipId,
+                                      //   @Part MultipartBody.Part photo,
+                                      @Part("rate") RequestBody rate,
+                                      @Part("name") RequestBody name,
+                                      @Part("grade") RequestBody grade,
+                                      @Part("address") RequestBody address);
+
+
+
+
+
 
     @Multipart
     @POST("api/shop_store/{id}")

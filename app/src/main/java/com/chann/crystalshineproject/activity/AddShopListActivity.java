@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import com.chann.crystalshineproject.R;
 import com.chann.crystalshineproject.adapter.SpinnerCategoryAdapter;
+import com.chann.crystalshineproject.data.ADDShopModel;
 import com.chann.crystalshineproject.data.ShopCategoriesResponse;
 import com.chann.crystalshineproject.data.ShopCategory;
 import com.chann.crystalshineproject.data.ShopList;
@@ -38,6 +39,7 @@ import com.chann.crystalshineproject.data.TownsResponse;
 import com.chann.crystalshineproject.data.Township;
 import com.chann.crystalshineproject.data.TownshipsResponse;
 import com.chann.crystalshineproject.service.RetrofitService;
+import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,7 +48,10 @@ import java.util.HashMap;
 import java.util.List;
 
 import id.zelory.compressor.Compressor;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -61,7 +66,9 @@ public class AddShopListActivity extends AppCompatActivity {
     private Spinner spinnerCategory, spinnerTownship, spinnerTown, spinnerRating, spinnerGrade;
     private DrawerLayout mDrawerLayout;
     private SpinnerCategoryAdapter adapter;
-
+    String photo_Path;
+    String selectedGrade;
+    String selectedRate;
     private String imagePath = "";
     private String token = null;
     private String name;
@@ -204,8 +211,8 @@ public class AddShopListActivity extends AppCompatActivity {
         spinnerGrade.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                String s = spinnerGrade.getItemAtPosition(spinnerGrade.getSelectedItemPosition()).toString();
-                Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
+                 selectedGrade = spinnerGrade.getItemAtPosition(spinnerGrade.getSelectedItemPosition()).toString();
+               // Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -225,8 +232,8 @@ public class AddShopListActivity extends AppCompatActivity {
         spinnerRating.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                String s = spinnerRating.getItemAtPosition(spinnerRating.getSelectedItemPosition()).toString();
-                Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
+                selectedRate= spinnerRating.getItemAtPosition(spinnerRating.getSelectedItemPosition()).toString();
+           //     Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -384,7 +391,7 @@ public class AddShopListActivity extends AppCompatActivity {
         Log.e("file name",file.getName());
         Log.e("fileimagePath",imagePath);
         RequestBody imageBody = RequestBody.create( MediaType.parse("multipart/form-data"), file);
-        photo = MultipartBody.Part.createFormData("photo",file.getName(),imageBody);
+        photo_Path = MultipartBody.Part.createFormData("photo",file.getName(),imageBody).toString();
         Log.e("file name",file.getName());
         Log.e("api","start");
 
@@ -399,7 +406,7 @@ public class AddShopListActivity extends AppCompatActivity {
         Log.e("name", name);
         Log.e("address", address);
         Log.e("image", file.getName());
-        Log.e("category", category);
+      //  Log.e("category", category);
         Log.e("township", township);
         Log.e("rating", String.valueOf(rating));
         Log.e("grade", grade);
@@ -408,38 +415,90 @@ public class AddShopListActivity extends AppCompatActivity {
         Log.e("townshipId", String.valueOf(townshipId));
         Log.e("photo", file.getName());
 
+        if (edtshopName.getText().toString().isEmpty())
+            edtshopName.setError("Enter Shop Name");
+        else name = edtshopName.getText().toString();
+
+        if (edtaddress.getText().toString().isEmpty())
+            edtaddress.setError("Enter Address");
+        else address = edtaddress.getText().toString();
+
         Log.e("bind","success");
-        RetrofitService.getApiEnd().shopStore(token,categoryId,townshipId,photo,rate,grade).enqueue(new Callback<ShopStoreResponse>() {
-            @Override
-            public void onResponse(Call<ShopStoreResponse> call, Response<ShopStoreResponse> response) {
-                Log.e("api","ok");
-                if(response.isSuccessful()){
-                    if(response.body().isSuccess){
-                        Log.e("response.body","success");
-                        Toast.makeText(AddShopListActivity.this, "Add Success", Toast.LENGTH_LONG).show();
 
-                        Intent intent = new Intent(getApplicationContext(), ShopListActivity.class);
-                        startActivity(intent);
-                    }
-                    else {
-                        Log.e("upload","fail");
-                        Toast.makeText(getApplicationContext(), (CharSequence) response.body().errorMessage, Toast.LENGTH_LONG).show();
-                    }
-                }else{
-                    Log.e("failure","fail");
-                }
+//       ADDShopModel model= new ADDShopModel(token.toString(),"1","1",selectedRate,name,selectedGrade,address);
+//       String s = new Gson().toJson(model);
+//       RetrofitService.getApiEnd().shopStore(token,Integer.toString(categoryId),Integer.toString(townshipId),selectedRate,name,selectedGrade,address)
 
-            }
 
-            @Override
-            public void onFailure(Call<ShopStoreResponse> call, Throwable t) {
-                Log.e("failure", t.toString());
-            }
-        });
+        RetrofitService.getApiEnd().shopStore(token,Integer.toString(categoryId),Integer.toString(townshipId),photo,selectedRate,name,selectedGrade,address).enqueue(new Callback<ShopStoreResponse>() {
+           @Override
+           public void onResponse(Call<ShopStoreResponse> call, Response<ShopStoreResponse> response) {
+               try{
+                   if(response.body() == null){
+                       Log.e("Response","Failed");
+                   }else if(response.body().isSuccess) {
+                       if(response.code() == 200){
+                       Log.e("Response",Boolean.toString(response.body().isSuccess));
+                       Toast.makeText(AddShopListActivity.this,"ADD Successful",Toast.LENGTH_SHORT).show();
+                       }
+                   }
+               }catch (Exception e){
+                   Log.e("OnCatch",e.getMessage());
+               }
+           }
 
+           @Override
+           public void onFailure(Call<ShopStoreResponse> call, Throwable t) {
+               Log.e("onFailture",t.getMessage());
+           }
+       });
+//        RetrofitService.getApiEnd().shopStore(token, "1", "1", selectedRate, name,selectedGrade, address).enqueue(new Callback<ShopStoreResponse>() {
+//            @Override
+//            public void onResponse(Call<ShopStoreResponse> call, Response<ShopStoreResponse> response) {
+//                Log.e("api","ok");
+//                try {
+//                if(!response.isSuccessful()){
+//                    Log.e("upload","fail");
+//                      // Toast.makeText(AddShopListActivity.this, "Add Success", Toast.LENGTH_LONG).show();
+//                    }
+//                else {
+//
+//                    Log.e("response.body","success");
+//                    Log.e("response.body",response.message());
+//                    Log.e("response.body",Boolean.toString(response.body().isSuccess));
+//
+//                }
+//                }catch (Exception e){
+//                    Log.e("Error",e.getMessage());
+//                }
+////                    if(response.body().isSuccess){
+//////                        Log.e("response.body","success");
+//////                        Toast.makeText(AddShopListActivity.this, "Add Success", Toast.LENGTH_LONG).show();
+//////
+////////                        Intent intent = new Intent(getApplicationContext(), ShopListActivity.class);
+//////                        startActivity(intent);
+////                    }
+//////                    else {
+//////                        Log.e("upload","fail");
+//////                        Toast.makeText(getApplicationContext(), (CharSequence) response.body().errorMessage, Toast.LENGTH_LONG).show();
+//////                    }
+////                }else{
+////                    Log.e("failure","fail");
+////                }
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ShopStoreResponse> call, Throwable t) {
+//                Log.e("failure", t.toString());
+//            }
+//        });
+//
 
 
     }
+
+
 
 
 

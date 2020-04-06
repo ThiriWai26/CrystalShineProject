@@ -322,6 +322,9 @@ public class CheckInActivity extends AppCompatActivity  {
                     if(response.body().isSuccess){
                         Log.e("response.body", "success");
                         Toast.makeText(getApplicationContext(), "Successful", Toast.LENGTH_LONG).show();
+
+//                        Intent intent = new Intent(getApplicationContext(), ProjectNameListActivity.class);
+//                        startActivity(intent);
                     }else {
                         Log.e("response.body","fail");
                         Toast.makeText(getApplicationContext(), (CharSequence) response.body().errorMessage, Toast.LENGTH_LONG).show();
@@ -337,9 +340,6 @@ public class CheckInActivity extends AppCompatActivity  {
             }
         });
 
-        Intent intent = new Intent(getApplicationContext(), ProjectNameListActivity.class);
-        intent.putExtra("Token", String.valueOf(token));
-        startActivity(intent);
 
     }
 
