@@ -78,6 +78,7 @@ public class AddShopListActivity extends AppCompatActivity {
     private String township;
     private String rating;
     private String grade;
+    private CompositeDisposable disposable;
 
     private int categoryId = -1;
     private int townshipId = -1;
@@ -99,13 +100,6 @@ public class AddShopListActivity extends AppCompatActivity {
         Toolbar toolbar =  findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-//                this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-//        mDrawerLayout.addDrawerListener(toggle);
-//        toggle.syncState();
-//
-//        NavigationView navigationView = (NavigationView) findViewById(R.id.navView);
-//        navigationView.setNavigationItemSelectedListener(this);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -122,6 +116,7 @@ public class AddShopListActivity extends AppCompatActivity {
         spinnerTown  = findViewById(R.id.spinnertown);
         spinnerRating = findViewById(R.id.spinnerrating);
         spinnerGrade = findViewById(R.id.spinnergrade);
+        disposable = new CompositeDisposable();
 
         Bundle bundle = getIntent().getExtras();
 
@@ -314,90 +309,90 @@ public class AddShopListActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        if (requestCode == 1 && data != null) {
+//
+//            Uri uri = data.getData();
+//            imagePath = getImageFilePath(data.getData());
+////            tvphoto.setText(imagePath);
+//        }
+//    }
 
-        if (requestCode == 1 && data != null) {
+//    private String getImageFilePath(Uri data) {
+//
+//        File file = new File(data.getPath());
+//        String[] filePath = file.getPath().split(":");
+//        String image_id = filePath[filePath.length - 1];
+//        Cursor cursor = getApplicationContext().getContentResolver().query(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, MediaStore.Images.Media._ID + " = ? ", new String[]{image_id}, null);
+//        if (cursor != null) {
+//            cursor.moveToFirst();
+//            String imagePath = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+//            cursor.close();
+//            Log.e("imagePath",imagePath);
+//
+//            String imageName = file.getName();
+//            Log.e("imageName", imageName);
+//            Log.e("imageName", file.getName());
+//
+//            String filename = imagePath.substring(imagePath.lastIndexOf("/"));
+//            tvphoto.setText(filename);
+//
+//            return  imagePath;
+//        }
+//
+//        return data.getPath();
+//    }
 
-            Uri uri = data.getData();
-            imagePath = getImageFilePath(data.getData());
-//            tvphoto.setText(imagePath);
-        }
-    }
-
-    private String getImageFilePath(Uri data) {
-
-        File file = new File(data.getPath());
-        String[] filePath = file.getPath().split(":");
-        String image_id = filePath[filePath.length - 1];
-        Cursor cursor = getApplicationContext().getContentResolver().query(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, MediaStore.Images.Media._ID + " = ? ", new String[]{image_id}, null);
-        if (cursor != null) {
-            cursor.moveToFirst();
-            String imagePath = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
-            cursor.close();
-            Log.e("imagePath",imagePath);
-
-            String imageName = file.getName();
-            Log.e("imageName", imageName);
-            Log.e("imageName", file.getName());
-
-            String filename = imagePath.substring(imagePath.lastIndexOf("/"));
-            tvphoto.setText(filename);
-
-            return  imagePath;
-        }
-
-        return data.getPath();
-    }
-
-    public void onPhoto(View view) {
-        Log.e("photoclick","ok");
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                    2);
-        } else {
-            Intent intent = new Intent();
-            intent.setType("image/*");
-            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false);
-            intent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1);
-
-        }
-
-    }
+//    public void onPhoto(View view) {
+//        Log.e("photoclick","ok");
+//
+//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+//                != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(this,
+//                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+//                    2);
+//        } else {
+//            Intent intent = new Intent();
+//            intent.setType("image/*");
+//            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false);
+//            intent.setAction(Intent.ACTION_GET_CONTENT);
+//            startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1);
+//
+//        }
+//
+//    }
 
     public void onClickShopSave(View view) {
 
-        Log.e("onclicksave", "ok");
-        RequestBody token = RequestBody.create( MediaType.parse("multipart/form-data"), Token.MyToken.getToken());
-        Log.e("Token", String.valueOf(token));
-        MultipartBody.Part photo = null;
-        File file = new File(imagePath);
-        Log.e("originalfilesize",String.valueOf(file.length()/1024));
-        File compressFile = null;
-
-        try {
-            compressFile = new Compressor(getApplicationContext()).compressToFile(file);
-            Log.e("compressfilesize",String.valueOf(compressFile.length()/1024));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-        Log.e("file name",file.getName());
-        Log.e("fileimagePath",imagePath);
-        RequestBody imageBody = RequestBody.create( MediaType.parse("multipart/form-data"), file);
-        photo_Path = MultipartBody.Part.createFormData("photo",file.getName(),imageBody).toString();
-        Log.e("file name",file.getName());
-        Log.e("api","start");
+//        Log.e("onclicksave", "ok");
+//        RequestBody token = RequestBody.create( MediaType.parse("multipart/form-data"), Token.MyToken.getToken());
+//        Log.e("Token", String.valueOf(token));
+//        MultipartBody.Part photo = null;
+//        File file = new File(imagePath);
+//        Log.e("originalfilesize",String.valueOf(file.length()/1024));
+//        File compressFile = null;
+//
+//        try {
+//            compressFile = new Compressor(getApplicationContext()).compressToFile(file);
+//            Log.e("compressfilesize",String.valueOf(compressFile.length()/1024));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//
+//        Log.e("file name",file.getName());
+//        Log.e("fileimagePath",imagePath);
+//        RequestBody imageBody = RequestBody.create( MediaType.parse("multipart/form-data"), file);
+//        photo_Path = MultipartBody.Part.createFormData("photo",file.getName(),imageBody).toString();
+//        Log.e("file name",file.getName());
+//        Log.e("api","start");
 
         name = edtshopName.getText().toString();
         address = edtaddress.getText().toString();
-        img = tvphoto.getText().toString();
+//        img = tvphoto.getText().toString();
         category =spinnerCategory.getSelectedItem().toString();
         township = spinnerTownship.getSelectedItem().toString();
         rating = spinnerRating.getSelectedItem().toString();
@@ -405,15 +400,12 @@ public class AddShopListActivity extends AppCompatActivity {
 
         Log.e("name", name);
         Log.e("address", address);
-        Log.e("image", file.getName());
-      //  Log.e("category", category);
         Log.e("township", township);
         Log.e("rating", String.valueOf(rating));
         Log.e("grade", grade);
         Log.e("token", Token.MyToken.getToken());
         Log.e("categoryId", String.valueOf(categoryId));
         Log.e("townshipId", String.valueOf(townshipId));
-        Log.e("photo", file.getName());
 
         if (edtshopName.getText().toString().isEmpty())
             edtshopName.setError("Enter Shop Name");
@@ -425,12 +417,7 @@ public class AddShopListActivity extends AppCompatActivity {
 
         Log.e("bind","success");
 
-//       ADDShopModel model= new ADDShopModel(token.toString(),"1","1",selectedRate,name,selectedGrade,address);
-//       String s = new Gson().toJson(model);
-//       RetrofitService.getApiEnd().shopStore(token,Integer.toString(categoryId),Integer.toString(townshipId),selectedRate,name,selectedGrade,address)
-
-
-        RetrofitService.getApiEnd().shopStore(token,Integer.toString(categoryId),Integer.toString(townshipId),photo,selectedRate,name,selectedGrade,address).enqueue(new Callback<ShopStoreResponse>() {
+        RetrofitService.getApiEnd().shopStore(token,categoryId,townshipId,rate,name,grade,address).enqueue(new Callback<ShopStoreResponse>() {
            @Override
            public void onResponse(Call<ShopStoreResponse> call, Response<ShopStoreResponse> response) {
                try{
@@ -440,6 +427,11 @@ public class AddShopListActivity extends AppCompatActivity {
                        if(response.code() == 200){
                        Log.e("Response",Boolean.toString(response.body().isSuccess));
                        Toast.makeText(AddShopListActivity.this,"ADD Successful",Toast.LENGTH_SHORT).show();
+
+                       Intent intent = new Intent(getApplicationContext(), ShopListPhotoActivity.class);
+                       intent.putExtra("token",token);
+                       intent.putExtra("townshipId", townshipId);
+                       startActivity(intent);
                        }
                    }
                }catch (Exception e){
@@ -497,10 +489,5 @@ public class AddShopListActivity extends AppCompatActivity {
 
 
     }
-
-
-
-
-
 
 }

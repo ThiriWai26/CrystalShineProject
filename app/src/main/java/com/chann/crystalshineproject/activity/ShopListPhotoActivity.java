@@ -1,25 +1,18 @@
 package com.chann.crystalshineproject.activity;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
@@ -28,7 +21,6 @@ import android.os.Looper;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -36,7 +28,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chann.crystalshineproject.R;
-import com.chann.crystalshineproject.data.ShopDetail;
 import com.chann.crystalshineproject.data.ShopReportResponse;
 import com.chann.crystalshineproject.data.Token;
 import com.chann.crystalshineproject.service.RetrofitService;
@@ -47,7 +38,6 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.navigation.NavigationView;
 
 import java.io.File;
 import java.io.IOException;
@@ -60,11 +50,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CheckInActivity extends AppCompatActivity  {
-
-    private DrawerLayout mDrawerLayout;
-
-    private ImageView imgcamera;
+public class ShopListPhotoActivity extends AppCompatActivity {  private ImageView imgcamera;
     private TextView tvtitle;
     private Button btnsubmit;
     private String token = null;
@@ -79,19 +65,22 @@ public class CheckInActivity extends AppCompatActivity  {
     int PERMISSION_ID = 44;
     private FusedLocationProviderClient mFusedLocationClient;
 
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_check_in);
+        setContentView(R.layout.activity_shop_list_photo);
 
         initActivity();
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void initActivity() {
 
-        Toolbar toolbar =  findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+            Toolbar toolbar =  findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
 
 //        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 //        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -102,16 +91,15 @@ public class CheckInActivity extends AppCompatActivity  {
 //        NavigationView navigationView = (NavigationView) findViewById(R.id.navView);
 //        navigationView.setNavigationItemSelectedListener(this);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_dehaze_black_24dp);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_dehaze_black_24dp);
 
-        init();
-    }
+            init();
+        }
 
-    @SuppressLint("NewApi")
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void init() {
-
         imgcamera = findViewById(R.id.imgcamera);
         btnsubmit = findViewById(R.id.btnsubmit);
         tvtitle = findViewById(R.id.tvTitle);
@@ -126,12 +114,6 @@ public class CheckInActivity extends AppCompatActivity  {
         projectId = bundle.getInt("projectId");
         Log.e("projectId", String.valueOf(projectId));
 
-        name = bundle.getString("name");
-        Log.e("name", name);
-
-        address = bundle.getString("address");
-        Log.e("address",address);
-
         townshipId = bundle.getInt("townshipId");
         Log.e("townshipId", String.valueOf(townshipId));
 
@@ -139,8 +121,8 @@ public class CheckInActivity extends AppCompatActivity  {
 
         getLastLocation();
 
-
     }
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void getLastLocation() {
         if (checkPermissions()) {
@@ -284,8 +266,7 @@ public class CheckInActivity extends AppCompatActivity  {
         return data.getPath();
     }
 
-
-    public void   onSubmit(View view) {
+    public void onclicksubmit(View view) {
 
         Log.e("onclicksave", "ok");
         RequestBody token = RequestBody.create( MediaType.parse("multipart/form-data"), Token.MyToken.getToken());
@@ -315,7 +296,7 @@ public class CheckInActivity extends AppCompatActivity  {
         Log.e("logitude", String.valueOf(longitude));
 
         Log.e("api","bind");
-        RetrofitService.getApiEnd().shopReport(token,shopId,projectId,photo,latitude,longitude).enqueue(new Callback<ShopReportResponse>() {
+        RetrofitService.getApiEnd().shopPhoto(token,shopId,projectId,photo,latitude,longitude).enqueue(new Callback<ShopReportResponse>() {
             @Override
             public void onResponse(Call<ShopReportResponse> call, Response<ShopReportResponse> response) {
                 if(response.isSuccessful()){
@@ -323,8 +304,12 @@ public class CheckInActivity extends AppCompatActivity  {
                         Log.e("response.body", "success");
                         Toast.makeText(getApplicationContext(), "Successful", Toast.LENGTH_LONG).show();
 
-                        Intent intent = new Intent(getApplicationContext(), ProjectNameListActivity.class);
+                        Intent intent = new Intent(getApplicationContext(), ShopDetailActivity.class);
+                        intent.putExtra("shopId", shopId);
+                        intent.putExtra("projectId", projectId);
+                        intent.putExtra("townshipId", townshipId);
                         startActivity(intent);
+
                     }else {
                         Log.e("response.body","fail");
                         Toast.makeText(getApplicationContext(), (CharSequence) response.body().errorMessage, Toast.LENGTH_LONG).show();
@@ -339,20 +324,5 @@ public class CheckInActivity extends AppCompatActivity  {
                 Log.e("failure", t.toString());
             }
         });
-
-
-    }
-
-    public void onDetail(View view) {
-        Intent intent = new Intent(getApplicationContext(), EditShopListActivity.class);
-        intent.putExtra("Token",token);
-        intent.putExtra("shopId", shopId);
-        intent.putExtra("projectId", projectId);
-        intent.putExtra("name", String.valueOf(name));
-        intent.putExtra("address", String.valueOf(address));
-        intent.putExtra("townshipId", townshipId);
-        Log.e("TOKEN", token);
-
-        startActivity(intent);
     }
 }

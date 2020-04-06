@@ -72,17 +72,16 @@ public interface ApiEnd {
     Call<ShopCategoriesResponse> shopCategory(@Field("token") String token);
 
 
-
-    @Multipart
     @Headers("Accept: application/json")
+    @Multipart
     @POST("/api/shop_store")
-    Call<ShopStoreResponse> shopStore(@Part("token") RequestBody token,
-                                      @Part("category_id") String categoryId,
-                                      @Part("township_id") String  townshipId,
+    Observable<ShopStoreResponse> shopStore1(@Part("token") String token,
+                                      @Part("category_id") int categoryId,
+                                      @Part("township_id") int  townshipId,
                                       @Part MultipartBody.Part photo,
-                                      @Part("rate") String rate,
-                                      @Part("name") String name,
-                                      @Part("grade") String grade,
+                                      @Part("rate") int rate,
+                                      @Part("grade") int grade,
+                                            @Part("name") String name,
                                       @Part("address") String address);
 
     @Multipart
@@ -99,12 +98,23 @@ public interface ApiEnd {
 
 
 
-
-
+    @FormUrlEncoded
+    @Headers("Accept: application/json")
+    @POST("/api/shop_store")
+    Call<ShopStoreResponse> shopStore(@Field("token") String token, @Field("category_id") int categoryId, @Field("township_id") int townshipId, @Field("rate") List<String> rate, @Field("grade") String grade, @Field("name") String name, @Field("address") String address);
 
     @Multipart
+    @POST("api/shop_photo")
+    Call<ShopReportResponse> shopPhoto(@Part("token") RequestBody token, @Part("shop_id") int shopId, @Part("project_id") int projectId, @Part MultipartBody.Part photo, @Part("latitude") double latitude, @Part("longitude") double longitude);
+
+
+    @FormUrlEncoded
     @POST("api/shop_store/{id}")
-    Call<ShopStoreResponse> shopStoreUpdate(@Part("token") RequestBody token, @Part("category_id") int categoryId, @Part("township_id") int townshipId, @Part MultipartBody.Part photo, @Part("rate") List<String> rate, @Part("grade") String grade, @Part("name") String name, @Part("address") String address);
+    Call<ShopStoreResponse> shopStoreUpdate(@Field("token") String token, @Field("category_id") int categoryId, @Field("township_id") int townshipId,  @Part("rate") List<String> rate, @Part("grade") String grade, @Part("name") String name, @Part("address") String address);
+
+//    @Multipart
+//    @POST("api/shop_store/{id}")
+//    Call<ShopStoreResponse> shopStoreUpdate(@Part("token") RequestBody token, @Part("category_id") int categoryId, @Part("township_id") int townshipId, @Part MultipartBody.Part photo, @Part("rate") List<String> rate, @Part("grade") String grade, @Part("name") String name, @Part("address") String address);
 
     @FormUrlEncoded
     @POST("api/logout")

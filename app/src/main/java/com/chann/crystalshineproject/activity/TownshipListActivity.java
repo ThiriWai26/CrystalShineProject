@@ -147,38 +147,7 @@ public class TownshipListActivity extends AppCompatActivity implements TownshipL
 
         Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.layout_township_filter);
-
-//        townfilterrecyclerview = dialog.findViewById(R.id.townfilter);
-//        townAdapter = new TownAdapter(this);
-//        townfilterrecyclerview.setAdapter(townAdapter);
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
-//        townfilterrecyclerview.setLayoutManager(linearLayoutManager);
-
         dialog.show();
-
-//        RetrofitService.getApiEnd().towns(token).enqueue(new Callback<TownsResponse>() {
-//            @Override
-//            public void onResponse(Call<TownsResponse> call, Response<TownsResponse> response) {
-//                if(response.isSuccessful()){
-//                    if(response.body().isSuccess){
-//                        Log.e("response.body","success");
-//                        townAdapter.addItem(response.body().towns);
-//                        Log.e("size", String.valueOf(town.size()));
-//                        adapter.notifyDataSetChanged();
-//
-////                        dialog.show();
-//                    }
-//                    else {
-//                        Log.e("response.body","fail");
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<TownsResponse> call, Throwable t) {
-//                Log.e("failure",t.toString());
-//            }
-//        });
 
     }
 

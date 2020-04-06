@@ -101,30 +101,30 @@
                 android:textColor="@color/grey_dark"
                 android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/tvphoto"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Photo"
-                android:layout_marginTop="@dimen/margin_lg"
-                android:textColor="@color/gray"
-                android:textSize="@dimen/title_size" />
+<!--            <TextView-->
+<!--                android:id="@+id/tvphoto"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Photo"-->
+<!--                android:layout_marginTop="@dimen/margin_lg"-->
+<!--                android:textColor="@color/gray"-->
+<!--                android:textSize="@dimen/title_size" />-->
 
-            <TextView
-                android:id="@+id/edtphoto"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginTop="@dimen/margin_lg"
-                android:drawableEnd="@drawable/camera_gray"
-                android:background="@drawable/bg_login_btn_rounded"
-                android:imeOptions="actionNext"
-                android:paddingLeft="24dp"
-                android:paddingStart="24dp"
-                android:paddingRight="24dp"
-                android:textColor="@color/grey_dark"
-                android:textSize="14sp"
-                android:onClick="onPhoto"
-                tools:ignore="RtlCompat" />
+<!--            <TextView-->
+<!--                android:id="@+id/edtphoto"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="48dp"-->
+<!--                android:layout_marginTop="@dimen/margin_lg"-->
+<!--                android:drawableEnd="@drawable/camera_gray"-->
+<!--                android:background="@drawable/bg_login_btn_rounded"-->
+<!--                android:imeOptions="actionNext"-->
+<!--                android:paddingLeft="24dp"-->
+<!--                android:paddingStart="24dp"-->
+<!--                android:paddingRight="24dp"-->
+<!--                android:textColor="@color/grey_dark"-->
+<!--                android:textSize="14sp"-->
+<!--                android:onClick="onPhoto"-->
+<!--                tools:ignore="RtlCompat" />-->
 
             <!--        <de.hdodenhof.circleimageview.CircleImageView-->
             <!--            android:id="@+id/profile"-->

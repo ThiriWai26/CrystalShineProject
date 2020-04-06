@@ -14,7 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitService {
 
-        public static final String BASE_URL="http://167.71.212.65";
+        public static final String BASE_URL="http://167.71.212.65/";
         private static ApiEnd apiEnd;
         private static RetrofitService retrofitService;
 
@@ -43,7 +43,7 @@ public class RetrofitService {
             Gson gson = new GsonBuilder().setLenient().create();
             Retrofit service = new Retrofit.Builder().baseUrl(BASE_URL).client(okHttpClient)
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .addConverterFactory(GsonConverterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create(gson))
                     .build();
 
 

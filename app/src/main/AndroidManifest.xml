@@ -18,7 +18,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activity.MapActivity"></activity>
+        <activity android:name=".activity.ShopListPhotoActivity"></activity>
+        <activity android:name=".activity.MapActivity" />
         <activity android:name=".activity.MapExampleActivity" />
         <activity android:name=".activity.AddShopListActivity" />
         <activity android:name=".activity.TownshipActivity" />

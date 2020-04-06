@@ -97,6 +97,7 @@ public class ShopListActivity extends AppCompatActivity implements  ShopListHold
 
                 Intent intent = new Intent(getApplicationContext(), AddShopListActivity.class);
                 intent.putExtra("townshipId", townshipId );
+                intent.putExtra("projectId", projectId);
                 intent.putExtra("token", token);
                 startActivity(intent);
 
